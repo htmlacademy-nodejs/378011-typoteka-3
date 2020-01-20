@@ -1,7 +1,7 @@
 # Личный проект «Типотека» [![Build status][travis-image]][travis-url]
 
 * Студент: [Светлана Костина](https://up.htmlacademy.ru/nodejs/3/user/378011).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Вохмянин](https://up.htmlacademy.ru/nodejs/3/user/530823).
 
 ---
 
