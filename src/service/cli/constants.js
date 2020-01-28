@@ -1,10 +1,10 @@
 'use strict';
 
-module.exports.DEFAULT_COUNT = 1;
+const DEFAULT_COUNT = 1;
 
-module.exports.FILE_NAME = `mock.json`;
+const FILE_NAME = `mock.json`;
 
-module.exports.TITLES = [
+const TITLES = [
   `Ёлки. История деревьев`,
   `Как перестать беспокоиться и начать жить`,
   `Как достигнуть успеха не вставая с кресла`,
@@ -19,7 +19,7 @@ module.exports.TITLES = [
   `Самый лучший музыкальный альбом этого года`
 ];
 
-module.exports.SENTENCES = [
+const SENTENCES = [
   `Ёлки — это не просто красивое дерево. Это прочная древесина.`,
   `Первая большая ёлка была установлена только в 1938 году.`,
   `Вы можете достичь всего. Стоит только немного постараться и запастись книгами.`,
@@ -42,7 +42,7 @@ module.exports.SENTENCES = [
   `Альбом стал настоящим открытием года. Мощные гитарные рифы и скоростные соло-партии не дадут заскучать.`
 ];
 
-module.exports.CATEGORIES = [
+const CATEGORIES = [
   `Деревья`,
   `За жизнь`,
   `Без рамки`,
@@ -54,7 +54,7 @@ module.exports.CATEGORIES = [
   `Железо`
 ];
 
-module.exports.HELP = `Программа запускает http-сервер и формирует файл с данными для API.
+const HELP = `Программа запускает http-сервер и формирует файл с данными для API.
     
     Гайд:
     server <command>;
@@ -63,29 +63,45 @@ module.exports.HELP = `Программа запускает http-сервер �
     --help:               печатает этот текст
     --generate <count>    формирует файл mock.json`;
 
-module.exports.USER_ARGV_INDEX = 2;
+const USER_ARGV_INDEX = 2;
 
-module.exports.DEFAULT_COMMAND = `--help`;
+const DEFAULT_COMMAND = `--help`;
 
-module.exports.MAX_OFFERS_NUMBER = 1000;
+const MAX_OFFERS_NUMBER = 1000;
 
-module.exports.AnnonceTextRestrict = {
+const AnnonceTextRestrict = {
   min: 1,
   max: 5,
 };
 
-module.exports.FullTextRestrict = {
+const FullTextRestrict = {
   min: 1,
   max: 20,
 };
 
-module.exports.ExitCode = {
-  success: 0,
-  failure: 1,
-};
+const EXIT_CODE_FAILURE = 1;
 
-module.exports.Messages = {
+const Messages = {
   error: `Can't write data to file...`,
   success: `Operation success. File created.`,
   overmuch: `Не больше 1000 публикаций`,
+};
+
+const GENERATE_COMMAND = `--generate`;
+
+module.exports = {
+  DEFAULT_COUNT,
+  FILE_NAME,
+  TITLES,
+  SENTENCES,
+  CATEGORIES,
+  HELP,
+  USER_ARGV_INDEX,
+  DEFAULT_COMMAND,
+  MAX_OFFERS_NUMBER,
+  AnnonceTextRestrict,
+  FullTextRestrict,
+  EXIT_CODE_FAILURE,
+  Messages,
+  GENERATE_COMMAND,
 };
