@@ -87,8 +87,6 @@ const Messages = {
   overmuch: `Не больше 1000 публикаций`,
 };
 
-const GENERATE_COMMAND = `--generate`;
-
 module.exports = {
   DEFAULT_COUNT,
   FILE_NAME,
@@ -103,5 +101,4 @@ module.exports = {
   FullTextRestrict,
   EXIT_CODE_FAILURE,
   Messages,
-  GENERATE_COMMAND,
 };

@@ -52,7 +52,7 @@ module.exports = {
         process.exit(EXIT_CODE_FAILURE);
       }
 
-       console.info(Messages.success);
+      console.info(Messages.success);
     });
   }
 };
