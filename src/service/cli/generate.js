@@ -1,6 +1,7 @@
 'use strict';
 
-const fs = require(`fs`);
+const fs = require(`fs`).promises;
+const chalk = require(`chalk`);
 const {
   getRandomInt,
   shuffle,
@@ -32,27 +33,26 @@ const generateOffers = (count) => (
     createdDate: getCreatedDate(),
     announce: shuffle(SENTENCES).slice(0, getRandomInt(FullTextRestrict.min, FullTextRestrict.max)).join(` `),
     fullText: shuffle(SENTENCES).slice(0, getRandomInt(AnnonceTextRestrict.min, AnnonceTextRestrict.max)).join(` `),
-    category: [CATEGORIES[getRandomInt(0, CATEGORIES.length - 1)]],
+    categories: [CATEGORIES[getRandomInt(0, CATEGORIES.length - 1)]],
   }))
 );
 
 module.exports = {
   name: `--generate`,
-  run(args) {
+  async run(args) {
     const [count] = args;
     const countOffer = Number.parseInt(count, 10) || DEFAULT_COUNT;
     if (countOffer > MAX_OFFERS_NUMBER) {
-      console.info(Messages.overmuch);
+      console.info(chalk.red(Messages.overmuch));
       process.exit(EXIT_CODE_FAILURE);
     }
     const content = JSON.stringify(generateOffers(countOffer));
-    fs.writeFile(FILE_NAME, content, (err) => {
-      if (err) {
-        console.error(Messages.error);
-        process.exit(EXIT_CODE_FAILURE);
-      }
-
-      console.info(Messages.success);
-    });
+    try {
+      await fs.writeFile(FILE_NAME, content);
+      console.info(chalk.green(Messages.success));
+    } catch (error) {
+      console.error(chalk.red(Messages.error));
+      process.exit(EXIT_CODE_FAILURE);
+    }
   }
 };

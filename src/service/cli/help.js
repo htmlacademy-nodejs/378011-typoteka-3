@@ -1,4 +1,6 @@
 'use strict';
+
+const chalk = require(`chalk`);
 const {
   HELP,
 } = require(`./constants`);
@@ -6,6 +8,6 @@ const {
 module.exports = {
   name: `--help`,
   run() {
-    console.info(HELP);
+    console.info(chalk.grey(HELP));
   }
 };
