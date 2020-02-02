@@ -2,7 +2,7 @@
 
 const DEFAULT_COUNT = 1;
 
-const FILE_NAME = `mock.json`;
+const FILE_NAME = `mocks.json`;
 
 const HELP = `Программа запускает http-сервер и формирует файл с данными для API.
     
@@ -11,7 +11,7 @@ const HELP = `Программа запускает http-сервер и фор�
     Команды:
     --version:            выводит номер версии
     --help:               печатает этот текст
-    --generate <count>    формирует файл mock.json`;
+    --generate <count>    формирует файл mocks.json`;
 
 const USER_ARGV_INDEX = 2;
 
@@ -19,28 +19,28 @@ const DEFAULT_COMMAND = `--help`;
 
 const MAX_OFFERS_NUMBER = 1000;
 
-const AnnonceTextRestrict = {
-  min: 1,
-  max: 5,
+const AnnounceTextRestrict = {
+  MIN: 1,
+  MAX: 5,
 };
 
 const FullTextRestrict = {
-  min: 1,
-  max: 20,
+  MIN: 1,
+  MAX: 20,
 };
 
 const CategoriesRestrict = {
-  min: 1,
-  max: 3,
+  MIN: 1,
+  MAX: 3,
 };
 
 const EXIT_CODE_FAILURE = 1;
 
 const Messages = {
-  writingError: `Can't write data to file...`,
-  readingError: `Can't read data from file`,
-  success: `Operation success. File created.`,
-  overmuch: `Не больше 1000 публикаций`,
+  WRITING_ERROR: `Can't write data to file...`,
+  READING_ERROR: `Can't read data from file`,
+  SUCCESS: `Operation success. File created.`,
+  OVERMUCH: `Не больше 1000 публикаций`,
 };
 
 const FILE_SENTENCES_PATH = `./data/sentences.txt`;
@@ -54,7 +54,7 @@ module.exports = {
   USER_ARGV_INDEX,
   DEFAULT_COMMAND,
   MAX_OFFERS_NUMBER,
-  AnnonceTextRestrict,
+  AnnounceTextRestrict,
   FullTextRestrict,
   CategoriesRestrict,
   EXIT_CODE_FAILURE,

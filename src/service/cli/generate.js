@@ -11,7 +11,7 @@ const {
   FILE_NAME,
   Messages,
   FullTextRestrict,
-  AnnonceTextRestrict,
+  AnnounceTextRestrict,
   CategoriesRestrict,
   EXIT_CODE_FAILURE,
   MAX_OFFERS_NUMBER,
@@ -32,9 +32,9 @@ const generateOffers = (count, sentences, titles, categories) => (
   Array(count).fill({}).map(() => ({
     title: titles[getRandomInt(0, titles.length - 1)],
     createdDate: getCreatedDate(),
-    announce: shuffle(sentences).slice(0, getRandomInt(FullTextRestrict.min, FullTextRestrict.max)).join(` `),
-    fullText: shuffle(sentences).slice(0, getRandomInt(AnnonceTextRestrict.min, AnnonceTextRestrict.max)).join(` `),
-    categories: shuffle(categories).slice(0, getRandomInt(CategoriesRestrict.min, CategoriesRestrict.max)).join(`, `),
+    announce: shuffle(sentences).slice(0, getRandomInt(FullTextRestrict.MIN, FullTextRestrict.MAX)).join(` `),
+    fullText: shuffle(sentences).slice(0, getRandomInt(AnnounceTextRestrict.MIN, AnnounceTextRestrict.MAX)).join(` `),
+    category: shuffle(categories).slice(0, getRandomInt(CategoriesRestrict.MIN, CategoriesRestrict.MAX)),
   }))
 );
 
@@ -44,7 +44,7 @@ const readContent = async (filePath) => {
     const content = initialContent.trim();
     return content.split(`\n`);
   } catch (err) {
-    console.error(chalk.red(`${Messages.readingError} ${filePath}`));
+    console.error(chalk.red(`${Messages.READING_ERROR} ${filePath}`));
     return process.exit(EXIT_CODE_FAILURE);
   }
 };
@@ -59,15 +59,15 @@ module.exports = {
     const [count] = args;
     const countOffer = Number.parseInt(count, 10) || DEFAULT_COUNT;
     if (countOffer > MAX_OFFERS_NUMBER) {
-      console.info(chalk.red(Messages.overmuch));
+      console.info(chalk.red(Messages.OVERMUCH));
       process.exit(EXIT_CODE_FAILURE);
     }
     const content = JSON.stringify(generateOffers(countOffer, sentences, titles, categories));
     try {
       await fs.writeFile(FILE_NAME, content);
-      console.info(chalk.green(Messages.success));
+      console.info(chalk.green(Messages.SUCCESS));
     } catch (error) {
-      console.error(chalk.red(Messages.writingError));
+      console.error(chalk.red(Messages.WRITING_ERROR));
       process.exit(EXIT_CODE_FAILURE);
     }
   }
