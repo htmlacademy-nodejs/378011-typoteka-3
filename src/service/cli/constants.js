@@ -41,11 +41,26 @@ const Messages = {
   READING_ERROR: `Can't read data from file`,
   SUCCESS: `Operation success. File created.`,
   OVERMUCH: `Не больше 1000 публикаций`,
+  NOT_FOUND: `Not found`,
+  SERVER_CREATION_ERROR: `Ошибка при создании сервера`,
+  WAITING_CONNECTION: `Ожидаю соединений на`,
 };
 
 const FILE_SENTENCES_PATH = `./data/sentences.txt`;
 const FILE_TITLES_PATH = `./data/titles.txt`;
 const FILE_CATEGORIES_PATH = `./data/categories.txt`;
+
+const DEFAULT_PORT = 3000;
+
+const ROOT_PAGE_PATH = `/`;
+
+const HttpCode = {
+  OK: 200,
+  NOT_FOUND: 404,
+  INTERNAL_SERVER_ERROR: 500,
+  FORBIDDEN: 403,
+  UNAUTHORIZED: 401,
+};
 
 module.exports = {
   DEFAULT_COUNT,
@@ -62,4 +77,7 @@ module.exports = {
   FILE_SENTENCES_PATH,
   FILE_TITLES_PATH,
   FILE_CATEGORIES_PATH,
+  DEFAULT_PORT,
+  ROOT_PAGE_PATH,
+  HttpCode,
 };
