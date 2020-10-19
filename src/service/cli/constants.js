@@ -19,6 +19,8 @@ const DEFAULT_COMMAND = `--help`;
 
 const MAX_OFFERS_NUMBER = 1000;
 
+const MAX_ID_LENGTH = 6;
+
 const AnnounceTextRestrict = {
   MIN: 1,
   MAX: 5,
@@ -32,6 +34,16 @@ const FullTextRestrict = {
 const CategoriesRestrict = {
   MIN: 1,
   MAX: 3,
+};
+
+const TextRestrict = {
+  MIN: 1,
+  MAX: 3,
+};
+
+const CommentsRestrict = {
+  MIN: 1,
+  MAX: 4,
 };
 
 const EXIT_CODE_FAILURE = 1;
@@ -49,6 +61,7 @@ const Messages = {
 const FILE_SENTENCES_PATH = `./data/sentences.txt`;
 const FILE_TITLES_PATH = `./data/titles.txt`;
 const FILE_CATEGORIES_PATH = `./data/categories.txt`;
+const FILE_COMMENTS_PATH = `./data/comments.txt`;
 
 const DEFAULT_PORT = 3000;
 
@@ -80,4 +93,8 @@ module.exports = {
   DEFAULT_PORT,
   ROOT_PAGE_PATH,
   HttpCode,
+  MAX_ID_LENGTH,
+  FILE_COMMENTS_PATH,
+  CommentsRestrict,
+  TextRestrict,
 };
