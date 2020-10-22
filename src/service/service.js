@@ -12,6 +12,6 @@ const [userCommand] = userArguments;
 if (userArguments.length === 0 || !Cli[userCommand]) {
   Cli[DEFAULT_COMMAND].run();
 } else {
-  const offersNumber = userArguments.slice(1);
-  Cli[userCommand].run(offersNumber);
+  const articlesNumber = userArguments.slice(1);
+  Cli[userCommand].run(articlesNumber);
 }

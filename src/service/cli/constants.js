@@ -17,7 +17,7 @@ const USER_ARGV_INDEX = 2;
 
 const DEFAULT_COMMAND = `--help`;
 
-const MAX_OFFERS_NUMBER = 1000;
+const MAX_ARTICLES_NUMBER = 1000;
 
 const MAX_ID_LENGTH = 6;
 
@@ -69,11 +69,19 @@ const ROOT_PAGE_PATH = `/`;
 
 const HttpCode = {
   OK: 200,
+  CREATED: 201,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
-  FORBIDDEN: 403,
-  UNAUTHORIZED: 401,
 };
+
+const API_PREFIX = `/api`;
+
+const articleKeys = [`title`, `createdDate`, `announce`, `fullText`, `category`];
+
+const commentKeys = [`text`];
 
 module.exports = {
   DEFAULT_COUNT,
@@ -81,7 +89,7 @@ module.exports = {
   HELP,
   USER_ARGV_INDEX,
   DEFAULT_COMMAND,
-  MAX_OFFERS_NUMBER,
+  MAX_ARTICLES_NUMBER,
   AnnounceTextRestrict,
   FullTextRestrict,
   CategoriesRestrict,
@@ -97,4 +105,7 @@ module.exports = {
   FILE_COMMENTS_PATH,
   CommentsRestrict,
   TextRestrict,
+  API_PREFIX,
+  articleKeys,
+  commentKeys,
 };

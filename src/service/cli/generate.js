@@ -15,7 +15,7 @@ const {
   AnnounceTextRestrict,
   CategoriesRestrict,
   EXIT_CODE_FAILURE,
-  MAX_OFFERS_NUMBER,
+  MAX_ARTICLES_NUMBER,
   FILE_SENTENCES_PATH,
   FILE_TITLES_PATH,
   FILE_CATEGORIES_PATH,
@@ -42,7 +42,7 @@ const generateComments = (count, comments)=>{
   });
 };
 
-const generateOffers = (count, sentences, titles, categories, comments) => (
+const generateArticles = (count, sentences, titles, categories, comments) => (
   Array(count).fill({}).map(() => ({
     title: titles[getRandomInt(0, titles.length - 1)],
     createdDate: getCreatedDate(),
@@ -74,12 +74,12 @@ module.exports = {
     const comments = await readContent(FILE_COMMENTS_PATH);
 
     const [count] = args;
-    const countOffer = Number.parseInt(count, 10) || DEFAULT_COUNT;
-    if (countOffer > MAX_OFFERS_NUMBER) {
+    const countArticle = Number.parseInt(count, 10) || DEFAULT_COUNT;
+    if (countArticle > MAX_ARTICLES_NUMBER) {
       console.info(chalk.red(Messages.OVERMUCH));
       process.exit(EXIT_CODE_FAILURE);
     }
-    const content = JSON.stringify(generateOffers(countOffer, sentences, titles, categories, comments));
+    const content = JSON.stringify(generateArticles(countArticle, sentences, titles, categories, comments));
     try {
       await fs.writeFile(FILE_NAME, content);
       console.info(chalk.green(Messages.SUCCESS));
