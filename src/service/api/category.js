@@ -2,9 +2,9 @@
 const {Router} = require(`express`);
 const {HttpCode} = require(`../cli/constants`);
 
-const route = new Router();
 
 module.exports = (app, service) => {
+  const route = new Router();
   app.use(`/category`, route);
 
   route.get(`/`, async (req, res) => {
