@@ -83,6 +83,11 @@ const articleKeys = [`title`, `createdDate`, `announce`, `fullText`, `category`]
 
 const commentKeys = [`text`];
 
+const Env = {
+  DEVELOPMENT: `development`,
+  PRODUCTION: `production`
+};
+
 module.exports = {
   DEFAULT_COUNT,
   FILE_NAME,
@@ -108,4 +113,5 @@ module.exports = {
   API_PREFIX,
   articleKeys,
   commentKeys,
+  Env,
 };
