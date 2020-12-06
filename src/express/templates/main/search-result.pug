@@ -1,0 +1,20 @@
+extends ../layout-admin-color-wrapper
+
+block content
+  main
+    section.search-page
+      .search-page__wrapper(class=results.length === 0 ? 'search-page__wrapper--empty':'')
+        h1 Поиск
+        .search.search-page__form
+          form(method="get" action="/search" autocomplete="off")
+            label
+              input(type="text"  name='search' placeholder="Что ищем?" value=search || '')
+            button.search__button.button.button--transparent(type="submit") Найти
+          if results.length > 0
+            each result in results
+              .search__result
+                time.search__date(datetime=result.createdDate) #{dayjs(result.createdDate).format(`DD.MM.YYYY, hh:mm`)}
+                a.search__link
+                  | #{result.title}
+        if results.length === 0
+          p.search-page__empty Ничего не нашлось
