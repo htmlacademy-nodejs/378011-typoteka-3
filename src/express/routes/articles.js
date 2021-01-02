@@ -24,8 +24,17 @@ const upload = multer({storage});
 
 articlesRouter.get(`/category/:id`, (req, res) => res.render(`articles/articles-by-category`));
 articlesRouter.get(`/add`, async (req, res) => {
+  const categories = await api.getCategories();
   res.render(`articles/new-post`, {
-    prevArticleData: Object.keys(req.query).length === 0 ? null : req.query,
+    prevArticleData: {
+      title: ``,
+      createdDate: new Date(),
+      announce: ``,
+      fullText: ``,
+      picture: ``,
+      category: ``,
+    },
+    categories,
   });
 });
 articlesRouter.get(`/edit/:id`, async (req, res) => {
@@ -42,7 +51,6 @@ articlesRouter.get(`/edit/:id`, async (req, res) => {
 });
 
 articlesRouter.get(`/:id`, (req, res) => res.render(`articles/post`));
-/**/
 articlesRouter.post(`/add`, upload.single(`picture`), async (req, res) => {
   const {body, file} = req;
   const currentDate = new Date();
@@ -51,16 +59,19 @@ articlesRouter.post(`/add`, upload.single(`picture`), async (req, res) => {
     createdDate: body.createdDate || `${currentDate}, ${currentDate.getTime()}`,
     announce: body.announce,
     fullText: body.fullText,
-    category: body.category || [],
+    category: body.category,
+    picture: file || ``,
   };
-  if (file) {
-    articleData.picture = file.filename;
-  }
+
   try {
     await api.createArticle(articleData);
     res.redirect(`/my`);
   } catch (error) {
-    res.redirect(`back`);
+    const categories = await api.getCategories();
+    res.render(`articles/new-post`, {
+      prevArticleData: articleData,
+      categories,
+    });
   }
 });
 
