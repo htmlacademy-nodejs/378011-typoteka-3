@@ -1,0 +1,89 @@
+DROP DATABASE IF EXISTS academy_typoteka;
+DROP ROLE IF EXISTS academy;
+
+CREATE ROLE academy WITH
+	LOGIN
+	NOSUPERUSER
+	NOCREATEDB
+	NOCREATEROLE
+	INHERIT
+	NOREPLICATION
+	CONNECTION LIMIT -1
+	PASSWORD 'academy';
+
+
+CREATE DATABASE academy_typoteka
+    WITH
+    OWNER = academy
+    TEMPLATE = template0
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'C'
+    LC_CTYPE = 'C'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+
+DROP TABLE IF EXISTS articles_categories;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS articles;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users
+(
+  id BIGSERIAL PRIMARY KEY,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  password VARCHAR(100) NOT NULL,
+  avatar TEXT
+);
+
+CREATE TABLE articles
+(
+    id BIGSERIAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    announce VARCHAR(250) NOT NULL,
+    full_text VARCHAR(1000) NOT NULL,
+    created_date DATE NOT NULL,
+    picture TEXT,
+    user_id BIGINT NOT NULL,
+  FOREIGN KEY(user_id) REFERENCES users
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+
+CREATE TABLE comments
+(
+	id BIGSERIAL PRIMARY KEY,
+	text VARCHAR(1000) NOT NULL,
+	created_date DATE NOT NULL,
+	article_id BIGINT NOT NULL,
+	user_id BIGINT NOT NULL,
+  FOREIGN KEY (article_id) REFERENCES articles
+	ON UPDATE CASCADE
+	ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users
+	ON UPDATE CASCADE
+	ON DELETE CASCADE
+);
+
+
+CREATE TABLE categories
+(
+	id BIGSERIAL PRIMARY KEY,
+	title VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE articles_categories
+(
+  article_id BIGINT,
+  category_id BIGINT,
+  CONSTRAINT articles_categories_pk PRIMARY KEY(article_id, category_id),
+  FOREIGN KEY(article_id) REFERENCES articles
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+  FOREIGN KEY(category_id) REFERENCES categories
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
