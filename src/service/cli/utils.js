@@ -1,4 +1,11 @@
 'use strict';
+const dayjs = require(`dayjs`);
+const fs = require(`fs`).promises;
+const chalk = require(`chalk`);
+const {
+  Messages,
+  EXIT_CODE_FAILURE,
+} = require(`./constants`);
 
 const getRandomInt = (min, max) => {
   min = Math.ceil(min);
@@ -15,4 +22,26 @@ const shuffle = (someArray) => {
   return someArray;
 };
 
-module.exports = {getRandomInt, shuffle};
+const getCreatedDate = () =>{
+  const currentDateTimestamp = Date.now();
+  let threeMonthAgo = new Date();
+  threeMonthAgo.setMonth(threeMonthAgo.getMonth() - 3);
+  const threeMonthAgoTimestamp = threeMonthAgo.getTime();
+  return dayjs(new Date(getRandomInt(threeMonthAgoTimestamp, currentDateTimestamp))).format(`YYYY-MM-DD`);
+};
+
+const readContent = async (filePath) => {
+  try {
+    const initialContent = await fs.readFile(filePath, `utf8`);
+    const content = initialContent.trim();
+    return content.split(`\n`);
+  } catch (err) {
+    console.error(chalk.red(`${Messages.READING_ERROR} ${filePath}`));
+    return process.exit(EXIT_CODE_FAILURE);
+  }
+};
+
+const createIdsArray = (length)=> Array(length).fill({}).map((el, index)=>index + 1);
+
+
+module.exports = {getRandomInt, shuffle, getCreatedDate, readContent, createIdsArray};

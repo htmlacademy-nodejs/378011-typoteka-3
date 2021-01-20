@@ -6,6 +6,8 @@ const {nanoid} = require(`nanoid`);
 const {
   getRandomInt,
   shuffle,
+  getCreatedDate,
+  readContent,
 } = require(`./utils`);
 const {
   DEFAULT_COUNT,
@@ -24,14 +26,6 @@ const {
   TextRestrict,
   CommentsRestrict,
 } = require(`./constants`);
-
-const getCreatedDate = () =>{
-  const currentDateTimestamp = Date.now();
-  let threeMonthAgo = new Date();
-  threeMonthAgo.setMonth(threeMonthAgo.getMonth() - 3);
-  const threeMonthAgoTimestamp = threeMonthAgo.getTime();
-  return new Date(getRandomInt(threeMonthAgoTimestamp, currentDateTimestamp));
-};
 
 const generateComments = (count, comments)=>{
   return Array(count).fill({}).map(()=>{
@@ -53,17 +47,6 @@ const generateArticles = (count, sentences, titles, categories, comments) => (
     comments: generateComments(getRandomInt(CommentsRestrict.MIN, CommentsRestrict.MAX), comments),
   }))
 );
-
-const readContent = async (filePath) => {
-  try {
-    const initialContent = await fs.readFile(filePath, `utf8`);
-    const content = initialContent.trim();
-    return content.split(`\n`);
-  } catch (err) {
-    console.error(chalk.red(`${Messages.READING_ERROR} ${filePath}`));
-    return process.exit(EXIT_CODE_FAILURE);
-  }
-};
 
 module.exports = {
   name: `--generate`,

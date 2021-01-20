@@ -11,6 +11,7 @@ const HELP = `Программа запускает http-сервер и фор�
     Команды:
     --version:            выводит номер версии
     --help:               печатает этот текст
+    --fill <count>        формирует файл fill-db.sql
     --generate <count>    формирует файл mocks.json`;
 
 const USER_ARGV_INDEX = 2;
@@ -62,6 +63,10 @@ const FILE_SENTENCES_PATH = `./data/sentences.txt`;
 const FILE_TITLES_PATH = `./data/titles.txt`;
 const FILE_CATEGORIES_PATH = `./data/categories.txt`;
 const FILE_COMMENTS_PATH = `./data/comments.txt`;
+const FILE_USERS_PATH = `./data/users.txt`;
+const FILE_EMAILS_PATH = `./data/emails.txt`;
+const FILE_AVATARS_PATH = `./data/avatars.txt`;
+const FILE_PICTURES_PATH = `./data/pictures.txt`;
 
 const DEFAULT_PORT = 3000;
 
@@ -88,6 +93,8 @@ const Env = {
   PRODUCTION: `production`
 };
 
+const FILL_DB_FILE = `./fill-db.sql`;
+
 module.exports = {
   DEFAULT_COUNT,
   FILE_NAME,
@@ -103,6 +110,11 @@ module.exports = {
   FILE_SENTENCES_PATH,
   FILE_TITLES_PATH,
   FILE_CATEGORIES_PATH,
+  FILE_USERS_PATH,
+  FILE_EMAILS_PATH,
+  FILE_AVATARS_PATH,
+  FILE_PICTURES_PATH,
+  FILL_DB_FILE,
   DEFAULT_PORT,
   ROOT_PAGE_PATH,
   HttpCode,

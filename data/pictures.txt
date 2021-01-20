@@ -1,0 +1,5 @@
+cat.png
+dog.jpeg
+butterfly.jpeg
+paint.jpeg
+mosaic.jpeg
