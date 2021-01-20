@@ -146,6 +146,7 @@ module.exports = {
       console.info(chalk.green(Messages.SUCCESS));
     } catch (error) {
       console.error(chalk.red(Messages.WRITING_ERROR));
+      process.exit(EXIT_CODE_FAILURE);
     }
   }
 };
