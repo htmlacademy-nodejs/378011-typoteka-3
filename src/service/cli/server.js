@@ -5,6 +5,8 @@ const express = require(`express`);
 const routes = require(`../api`);
 const getMockData = require(`../lib/get-mock-data`);
 const {getLogger} = require(`../lib/logger`);
+const sequelize = require(`../lib/sequelize`);
+
 const {
   DEFAULT_PORT,
   HttpCode,
@@ -38,11 +40,21 @@ app.use((err, _req, _res, _next) => {
 
 module.exports = {
   name: `--server`,
+
   async run(args) {
     const [customPort] = args;
     const port = Number.parseInt(customPort, 10) || DEFAULT_PORT;
+
     try {
-      await getMockData();
+      logger.info(`Trying to connect to database...`);
+      await sequelize.authenticate();
+    } catch (err) {
+      logger.error(`An error occured: ${err.message}`);
+      process.exit(1);
+    }
+    logger.info(`Connection to database established`);
+
+    try {
       app.listen(port, (err) => {
         if (err) {
           return logger.error(`Ошибка при создании сервера`, err);
