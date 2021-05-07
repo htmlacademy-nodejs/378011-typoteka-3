@@ -3,7 +3,6 @@
 const chalk = require(`chalk`);
 const express = require(`express`);
 const routes = require(`../api`);
-const getMockData = require(`../lib/get-mock-data`);
 const {getLogger} = require(`../lib/logger`);
 const sequelize = require(`../lib/sequelize`);
 

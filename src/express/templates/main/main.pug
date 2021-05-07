@@ -64,9 +64,9 @@ block content
         each article in articles
           li.preview__item
             ul.preview__breadcrumbs
-              each category in article.category
+              each category in article.categories
                 li.preview__breadcrumbs-item
-                  a.preview__breadcrumbs-link(href='#') #{category}
+                  a.preview__breadcrumbs-link(href='#') #{category.name}
             .preview__background
               img.preview__background-image(src='/img/skyscraper@1x.jpg', alt=article.title)
             time.preview__time(datetime=article.createdDate) #{dayjs(article.createdDate).format(`DD.MM.YYYY, hh:mm`)}

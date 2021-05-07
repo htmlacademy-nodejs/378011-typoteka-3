@@ -50,7 +50,12 @@ articlesRouter.get(`/edit/:id`, async (req, res) => {
   }
 });
 
-articlesRouter.get(`/:id`, (req, res) => res.render(`articles/post`));
+articlesRouter.get(`/:id`, async (req, res) => {
+  const {id} = req.params;
+  const article = await api.getArticle(id, true);
+  res.render(`articles/post`, {article});
+});
+
 articlesRouter.post(`/add`, upload.single(`picture`), async (req, res) => {
   const {body, file} = req;
   const currentDate = new Date();
@@ -59,7 +64,7 @@ articlesRouter.post(`/add`, upload.single(`picture`), async (req, res) => {
     createdDate: body.createdDate || `${currentDate}, ${currentDate.getTime()}`,
     announce: body.announce,
     fullText: body.fullText,
-    category: body.category,
+    categories: body.category,
     picture: file || ``,
   };
 

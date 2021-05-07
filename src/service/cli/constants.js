@@ -47,6 +47,11 @@ const CommentsRestrict = {
   MAX: 4,
 };
 
+const PictureRestrict = {
+  MIN: 1,
+  MAX: 16,
+};
+
 const EXIT_CODE_FAILURE = 1;
 
 const Messages = {
@@ -84,7 +89,7 @@ const HttpCode = {
 
 const API_PREFIX = `/api`;
 
-const articleKeys = [`title`, `createdDate`, `announce`, `fullText`, `category`];
+const articleKeys = [`title`, `createdDate`, `announce`, `fullText`, `categories`];
 
 const commentKeys = [`text`];
 
@@ -126,4 +131,5 @@ module.exports = {
   articleKeys,
   commentKeys,
   Env,
+  PictureRestrict,
 };
