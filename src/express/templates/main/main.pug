@@ -67,15 +67,18 @@ block content
               each category in article.categories
                 li.preview__breadcrumbs-item
                   a.preview__breadcrumbs-link(href='#') #{category.name}
-            .preview__background
-              img.preview__background-image(src='/img/skyscraper@1x.jpg', alt=article.title)
+            if article.picture !== null
+              .preview__background
+                img.preview__background-image(src=article.picture, width='460' height='240', alt=article.title)
             time.preview__time(datetime=article.createdDate) #{dayjs(article.createdDate).format(`DD.MM.YYYY, hh:mm`)}
             h3.preview__name
               a.preview__name-link(href='article/${article.id}') #{article.title}
             p.preview__text
-              | #{article.fullText}
+              | #{article.announce}
             a.preview__comment(href='#')
               | Комментарии
               span.preview__cloud
               b.preview__comment-count #{article.comments.length}
+
+
 
