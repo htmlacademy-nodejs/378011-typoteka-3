@@ -41,7 +41,12 @@ const readContent = async (filePath) => {
   }
 };
 
-const createIdsArray = (length)=> Array(length).fill({}).map((el, index)=>index + 1);
+const getRandomNull = () => {
+  if (Math.floor(Math.random() * (2))) {
+    return true;
+  } else {
+    return null;
+  }
+};
 
-
-module.exports = {getRandomInt, shuffle, getCreatedDate, readContent, createIdsArray};
+module.exports = {getRandomInt, shuffle, getCreatedDate, readContent, getRandomNull};

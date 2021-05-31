@@ -4,6 +4,7 @@ const fs = require(`fs`).promises;
 const {
   getRandomInt,
   shuffle,
+  getRandomNull,
 } = require(`./utils`);
 const {getLogger} = require(`../lib/logger`);
 const sequelize = require(`../lib/sequelize`);
@@ -22,6 +23,7 @@ const {
   FILE_COMMENTS_PATH,
   TextRestrict,
   CommentsRestrict,
+  CategoriesRestrict,
 } = require(`./constants`);
 
 const logger = getLogger({});
@@ -47,7 +49,7 @@ const generateComments = (count, comments)=>{
 
 const getRandomSubarray = (items) => {
   items = items.slice();
-  let count = getRandomInt(1, items.length - 1);
+  let count = getRandomInt(CategoriesRestrict.MIN, CategoriesRestrict.MAX);
   const result = [];
   while (count--) {
     result.push(
@@ -65,9 +67,8 @@ const generateArticles = (count, sentences, titles, categories, comments) => (
   Array(count).fill({}).map(() => ({
     title: titles[getRandomInt(0, titles.length - 1)],
     announce: shuffle(sentences).slice(0, getRandomInt(AnnounceTextRestrict.MIN, AnnounceTextRestrict.MAX)).join(` `),
-    // fullText: `werrr`,
     fullText: shuffle(sentences).slice(0, getRandomInt(FullTextRestrict.MIN, FullTextRestrict.MAX)).join(` `),
-    picture: getPictureFileName(getRandomInt(PictureRestrict.MIN, PictureRestrict.MAX)),
+    picture: getRandomNull() && getPictureFileName(getRandomInt(PictureRestrict.MIN, PictureRestrict.MAX)),
     categories: getRandomSubarray(categories),
     comments: generateComments(getRandomInt(CommentsRestrict.MIN, CommentsRestrict.MAX), comments),
   }))
