@@ -89,16 +89,21 @@ const HttpCode = {
 
 const API_PREFIX = `/api`;
 
-const articleKeys = [`title`, `createdDate`, `announce`, `fullText`, `categories`];
-
-const commentKeys = [`text`];
-
 const Env = {
   DEVELOPMENT: `development`,
   PRODUCTION: `production`
 };
 
 const FILL_DB_FILE = `./fill-db.sql`;
+
+const MIN_COMMENTS_LENGTH = 20;
+
+const HttpMethod = {
+  GET: `GET`,
+  POST: `POST`,
+  PUT: `PUT`,
+  DELETE: `DELETE`
+};
 
 module.exports = {
   DEFAULT_COUNT,
@@ -128,8 +133,8 @@ module.exports = {
   CommentsRestrict,
   TextRestrict,
   API_PREFIX,
-  articleKeys,
-  commentKeys,
   Env,
   PictureRestrict,
+  MIN_COMMENTS_LENGTH,
+  HttpMethod,
 };

@@ -4,7 +4,7 @@ const {Router} = require(`express`);
 const multer = require(`multer`);
 const path = require(`path`);
 const {nanoid} = require(`nanoid`);
-
+const {ensureArray} = require(`./../../service/cli/utils`);
 const UPLOAD_DIR = `../upload/img/`;
 
 const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
@@ -24,6 +24,7 @@ const upload = multer({storage});
 
 articlesRouter.get(`/category/:id`, (req, res) => res.render(`articles/articles-by-category`));
 articlesRouter.get(`/add`, async (req, res) => {
+  const {error} = req.query;
   const categories = await api.getCategories();
   res.render(`articles/new-post`, {
     prevArticleData: {
@@ -34,26 +35,8 @@ articlesRouter.get(`/add`, async (req, res) => {
       picture: ``,
       category: ``,
     },
-    categories,
+    categories, error
   });
-});
-articlesRouter.get(`/edit/:id`, async (req, res) => {
-  const {id} = req.params;
-  try {
-    const [article, categories] = await Promise.all([
-      api.getArticle(id),
-      api.getCategories()
-    ]);
-    res.render(`articles/edit-article`, {article, categories});
-  } catch (error) {
-    res.redirect(`back`);
-  }
-});
-
-articlesRouter.get(`/:id`, async (req, res) => {
-  const {id} = req.params;
-  const article = await api.getArticle(id, true);
-  res.render(`articles/post`, {article});
 });
 
 articlesRouter.post(`/add`, upload.single(`picture`), async (req, res) => {
@@ -64,7 +47,7 @@ articlesRouter.post(`/add`, upload.single(`picture`), async (req, res) => {
     createdDate: body.createdDate || `${currentDate}, ${currentDate.getTime()}`,
     announce: body.announce,
     fullText: body.fullText,
-    categories: body.category,
+    categories: ensureArray(body.category),
     picture: file || ``,
   };
 
@@ -72,12 +55,59 @@ articlesRouter.post(`/add`, upload.single(`picture`), async (req, res) => {
     await api.createArticle(articleData);
     res.redirect(`/my`);
   } catch (error) {
-    const categories = await api.getCategories();
-    res.render(`articles/new-post`, {
-      prevArticleData: articleData,
-      categories,
-    });
+    res.redirect(`/articles/add?error=${encodeURIComponent(error.response.data.message)}`);
   }
 });
+articlesRouter.get(`/edit/:id`, async (req, res) => {
+  const {id} = req.params;
+  const {error} = req.query;
+  const [article, categories] = await Promise.all([
+    api.getArticle(id),
+    api.getCategories()
+  ]);
+  console.log(article, `article`);
+  console.log(categories, `categories`);
+  res.render(`articles/edit-article`, {id, article, categories, error});
+});
+
+articlesRouter.post(`/edit/:id`, upload.single(`picture`), async (req, res) => {
+  const {body, file} = req;
+  const {id} = req.params;
+  console.log(body);
+  const articleData = {
+    picture: file ? file.filename : body[`old-image`],
+    fullText: body.fullText,
+    announce: body.announce,
+    title: body.title,
+    categories: ensureArray(body.category),
+    createdDate: body.createdDate,
+  };
+
+  try {
+    await api.editArticle(id, articleData);
+    res.redirect(`/my`);
+  } catch (error) {
+    res.redirect(`/articles/edit/${id}?error=${encodeURIComponent(error.response.data.message)}`);
+  }
+});
+
+articlesRouter.get(`/:id`, async (req, res) => {
+  const {id} = req.params;
+  const {error} = req.query;
+  const article = await api.getArticle(id, true);
+  res.render(`articles/post`, {article, id, error});
+});
+
+articlesRouter.post(`/:id/comments`, async (req, res) => {
+  const {id} = req.params;
+  const {text} = req.body;
+  try {
+    await api.createComment(id, {text});
+    res.redirect(`/articles/${id}`);
+  } catch (error) {
+    res.redirect(`/articles/${id}?error=${encodeURIComponent(error.response.data.message)}`);
+  }
+});
+
 
 module.exports = articlesRouter;

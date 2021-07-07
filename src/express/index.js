@@ -2,7 +2,7 @@
 
 const express = require(`express`);
 const path = require(`path`);
-
+const favicon = require(`serve-favicon`);
 const articlesRoutes = require(`./routes/articles`);
 const myRoutes = require(`./routes/my`);
 const mainRoutes = require(`./routes/main`);
@@ -13,7 +13,11 @@ const UPLOAD_DIR = `upload`;
 
 
 const app = express();
+app.use(express.urlencoded({extended: false}))
+.use(express.json());
+
 app.locals.dayjs = require(`dayjs`);
+app.use(favicon(path.join(__dirname, `public`, `favicon.ico`)));
 
 app.use(`/articles`, articlesRoutes);
 app.use(`/my`, myRoutes);

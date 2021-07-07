@@ -5,6 +5,8 @@ const express = require(`express`);
 const routes = require(`../api`);
 const {getLogger} = require(`../lib/logger`);
 const sequelize = require(`../lib/sequelize`);
+const swaggerUi = require(`swagger-ui-express`);
+const swaggerDocument = require(`../../../swagger`);
 
 const {
   DEFAULT_PORT,
@@ -17,6 +19,7 @@ const logger = getLogger({name: `api`});
 
 app.use(express.json());
 
+app.use(`/api-docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use((req, res, next) => {
   logger.debug(`Request on route ${req.url}`);
   res.on(`finish`, () => {
@@ -36,6 +39,7 @@ app.use((req, res) => {
 app.use((err, _req, _res, _next) => {
   logger.error(`An error occured on processing request: ${err.message}`);
 });
+
 
 module.exports = {
   name: `--server`,

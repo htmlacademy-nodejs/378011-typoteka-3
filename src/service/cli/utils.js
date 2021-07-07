@@ -49,4 +49,13 @@ const getRandomNull = () => {
   }
 };
 
-module.exports = {getRandomInt, shuffle, getCreatedDate, readContent, getRandomNull};
+const ensureArray = (value) => Array.isArray(value) ? value : [value];
+
+module.exports = {
+  getRandomInt,
+  shuffle,
+  getCreatedDate,
+  readContent,
+  getRandomNull,
+  ensureArray,
+};
