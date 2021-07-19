@@ -5,42 +5,48 @@ block content
     section.modal.modal--flex
       .popup.popup--new-publication.popup--flex
         .new-publication
-          .new-publication__header
-            h1 Редактирование публикации
-            .new-publication__date-form
-              h3 Дата публикации
-              form(action='#', method='POST')
-                .new-publication__date-block
-                  label(for='new-publication-date', aria-label='Календарь')
-                  input#new-publication-date(type='text', name='login', placeholder=dayjs(article.createdDate).format(`DD.MM.YYYY`))
-            button.new-publication__button.button.button--colored(type='submit') Опубликовать
-          button.popup__button.button.button--popup-close(type='button', aria-label='Закрыть окно')
-            | Закрыть
-            | окно
-          .new-publication__form.form
-            form(action='#', method='get')
+          form(action=`/articles/edit/${article.id}`, method='post' enctype="multipart/form-data" autocomplete="off")
+            .new-publication__header
+              h1 Редактирование публикации
+              .new-publication__date-form
+                h3 Дата публикации
+                  .new-publication__date-block
+                    label(for='new-publication-date', aria-label='Календарь')
+                    input#new-publication-date(type='text', name='createdDate', value=dayjs(article.createdAt).format(`DD.MM.YYYY`))
+              button.new-publication__button.button.button--colored(type='submit') Опубликовать
+            button.popup__button.button.button--popup-close(type='button', aria-label='Закрыть окно')
+              | Закрыть
+              | окно
+            .new-publication__form.form
               .form__wrapper.form__wrapper--intro
                 .form__field
                   label
-                    input(type='text', value=`${article.title || 'Заголовок'}`, required='')
+                    input(type='text', name='title', value=`${article.title || 'Заголовок'}`, required)
                 .form__field.form__field--post-image
                   label
                     input#image-name-field(type='text', placeholder=`${article.picture || 'Фотография'}`, readonly='')
                   .form__image-loader.form__image-loader--publication
                     label
-                      input.visually-hidden(type='file')
+                      input.visually-hidden(type='file', name='picture')
                       | Обзор
-                each category in categories
+                each category, index in categories
                   .new-publication__checkbox.new-publication__checkbox--auto
-                    input(type='checkbox', name=`${category.name}` id=`checkbox-auto-${category.id}` )
+                    input(
+                      type='checkbox',
+                      value=index,
+                      name='category',
+                      id='category-checkbox-' + index
+                      checked=!!(article.categories.find((el)=>el.id===category.id)))
                     label(for=`checkbox-auto-${category.name}`) #{category.name}
                 a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
               .form__wrapper.form__wrapper--text
                 .form__field.form__field--publication-text
                   label
-                    textarea(rows='1', placeholder='Анонс публикации') #{article.announce}
+                    textarea(rows='1', name='announce', placeholder='Анонс публикации') #{article.announce}
                 .form__field.form__field--publication-text
                   label
-                    textarea(rows='1', placeholder='Полный текст публикации') #{article.fullText}
+                    textarea(rows='1', name='fullText', placeholder='Полный текст публикации') #{article.fullText}
+                +errorMessage(error)
       .modal__overlay
+
 
