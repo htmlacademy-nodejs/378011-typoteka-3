@@ -105,6 +105,13 @@ const HttpMethod = {
   DELETE: `DELETE`
 };
 
+const SALT_ROUNDS = 10;
+
+const UserRole = {
+  admin: `admin`,
+  member: `member`,
+};
+
 module.exports = {
   DEFAULT_COUNT,
   FILE_NAME,
@@ -137,4 +144,6 @@ module.exports = {
   PictureRestrict,
   MIN_COMMENTS_LENGTH,
   HttpMethod,
+  SALT_ROUNDS,
+  UserRole,
 };

@@ -4,6 +4,12 @@ SELECT
   title
 FROM categories;
 
+-- Получить спискок юзеров (имя, емейл)
+SELECT
+  name,
+  email
+FROM users;
+
 -- Получить список категорий для которых для которых создана минимум одна публикация (идентификатор, наименование категории);
 SELECT
   articles_categories.category_id,
