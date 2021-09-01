@@ -26,4 +26,7 @@ module.exports = Joi.object({
 
   createdDate: Joi.date()
   .required(),
+
+  userId: Joi.number().integer().positive().required()
+
 });

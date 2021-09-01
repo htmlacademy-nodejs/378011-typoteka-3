@@ -10,14 +10,15 @@ const category = require(`./category`);
 const DataService = require(`../data-service/category`);
 const {HttpCode} = require(`../cli/constants`);
 
-const {mockCategories, mockOffers} = require(`./mocks/mock-data-for-category`);
+const {mockCategories, mockArticles} = require(`./mocks/mock-data-for-category`);
+const {mockUsers} = require(`./mocks/mock-users`);
 const mockDB = new Sequelize(`sqlite::memory:`, {logging: false});
 
 const app = express();
 app.use(express.json());
 
 beforeAll(async () => {
-  await initDB(mockDB, {categories: mockCategories, articles: mockOffers});
+  await initDB(mockDB, {categories: mockCategories, articles: mockArticles, users: mockUsers});
   category(app, new DataService(mockDB));
 });
 

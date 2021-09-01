@@ -24,6 +24,14 @@ body
     if message
       .server-error= message
 
+  mixin errorList(messages)
+    if messages.length
+      div(class='form__validation-error')
+        p(class='form__error-message') При регистрации произошли ошибки:
+        ul(class='form__errors')
+          each message in messages
+            li(class='form__error')= message
+
   mixin pagination(page, totalPages, width, prefix)
     -
       let start = page - width;

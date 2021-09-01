@@ -5,5 +5,6 @@ const {
 } = require(`../cli/constants`);
 
 module.exports = Joi.object({
-  text: Joi.string().min(MIN_COMMENTS_LENGTH).required()
+  text: Joi.string().min(MIN_COMMENTS_LENGTH).required(),
+  userId: Joi.number().integer().positive().required()
 });

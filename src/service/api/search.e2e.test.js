@@ -10,18 +10,18 @@ const search = require(`./search`);
 const DataService = require(`../data-service/search`);
 const {HttpCode} = require(`../cli/constants`);
 
-const {mockCategories, mockOffers} = require(`./mocks/mock-data-for-search`);
+const {mockCategories, mockArticles} = require(`./mocks/mock-data-for-search`);
 const mockDB = new Sequelize(`sqlite::memory:`, {logging: false});
 
 const app = express();
 app.use(express.json());
 
 beforeAll(async () => {
-  await initDB(mockDB, {categories: mockCategories, articles: mockOffers});
+  await initDB(mockDB, {categories: mockCategories, articles: mockArticles});
   search(app, new DataService(mockDB));
 });
 
-describe(`API returns offer based on search query`, () => {
+describe(`API returns article based on search query`, () => {
 
   let response;
 
