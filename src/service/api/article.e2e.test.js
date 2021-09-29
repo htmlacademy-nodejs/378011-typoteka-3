@@ -12,11 +12,11 @@ const CommentService = require(`../data-service/comment`);
 const {HttpCode} = require(`../cli/constants`);
 
 const {mockCategories, mockArticles} = require(`./mocks/mock-data-for-article`);
-
+const {mockUsers} = require(`./mocks/mock-users`);
 
 const createAPI = async () => {
   const mockDB = new Sequelize(`sqlite::memory:`, {logging: false});
-  await initDB(mockDB, {categories: mockCategories, articles: mockArticles});
+  await initDB(mockDB, {categories: mockCategories, articles: mockArticles, users: mockUsers});
   const app = express();
   app.use(express.json());
   article(app, new DataService(mockDB), new CommentService(mockDB));
@@ -79,12 +79,13 @@ describe(`API creates an article if data is valid`, () => {
 
   const newArticle = {
     categories: [
-      `1`
+      1
     ],
     title: `Дам погладить котика - и почесать ему за ухом`,
     createdDate: `2020-08-26T03:44:20.019Z`,
     announce: `Дам погладить котика. Дорого. Не гербалайф. Без смс.`,
     fullText: `Абсолютно невозможно не любить котиков. Даже если они не любят вас.`,
+    userId: 1
   };
 
   let app; let response;
@@ -172,12 +173,13 @@ describe(`API changes existent article`, () => {
 
   const newArticle = {
     categories: [
-      `1`
+      1, 2
     ],
     title: `Дам погладить котика - и почесать ему за ухом`,
     createdDate: `2020-08-26T03:44:20.019Z`,
     announce: `Дам погладить котика. Дорого. Не гербалайф. Без смс.`,
     fullText: `Абсолютно невозможно не любить котиков. Даже если они не любят вас.`,
+    userId: 1
   };
 
   let app; let response;
@@ -194,6 +196,8 @@ describe(`API changes existent article`, () => {
   test(`Article is really changed`, () => request(app)
     .get(`/articles/1`)
     .expect((res) => expect(res.body.title).toBe(`Дам погладить котика - и почесать ему за ухом`))
+    // eslint-disable-next-line max-nested-callbacks
+    .expect((res) => expect(res.body.categories.map((category)=>category.ArticleCategory.CategoryId)).toEqual([1, 2]))
   );
 
 });
@@ -210,6 +214,7 @@ test(`API returns status code 400 when trying to change non-existent article`, a
     createdDate: `2020-08-26T03:44:20.019Z`,
     announce: `Дам погладить котика. Дорого. Не гербалайф. Без смс.`,
     fullText: `Абсолютно невозможно не любить котиков. Даже если они не любят вас.`,
+    userId: 1
   };
 
   return request(app)
@@ -271,7 +276,8 @@ describe(`API creates a comment to existent article and returns status code 201`
   let app; let response;
 
   const newComment = {
-    text: `Комментарий достаточной длины`
+    text: `Комментарий достаточной длины`,
+    userId: 1
   };
 
   beforeAll(async () => {
@@ -298,7 +304,8 @@ test(`API refuses to create a comment to non-existent article and returns status
   return request(app)
   .post(`/articles/666/comments`)
   .send({
-    text: `Комментарий достаточной длины`
+    text: `Комментарий достаточной длины`,
+    userId: 1
   })
   .expect(HttpCode.NOT_FOUND);
 
@@ -312,8 +319,6 @@ test(`API refuses to create a comment when data is invalid, and returns status c
     .post(`/articles/1/comments`)
     .send({})
     .expect(HttpCode.BAD_REQUEST);
-
-
 });
 
 

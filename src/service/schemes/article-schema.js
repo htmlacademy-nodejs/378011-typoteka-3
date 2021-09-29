@@ -16,7 +16,7 @@ module.exports = Joi.object({
   .max(1000),
 
   categories: Joi.array()
-  .items(Joi.string())
+  .items(Joi.number())
   .min(1)
   .required(),
 
