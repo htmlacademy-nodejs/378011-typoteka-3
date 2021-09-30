@@ -102,14 +102,14 @@ module.exports = {
         name: `Иван Иванов`,
         email: `ivanov@example.com`,
         passwordHash: await passwordUtils.hash(`ivanov`),
-        avatar: `avatar01.jpg`,
+        avatar: `/img/avatar-1.png`,
         role: `admin`
       },
       {
         name: `Пётр Петров`,
         email: `petrov@example.com`,
         passwordHash: await passwordUtils.hash(`petrov`),
-        avatar: `avatar02.jpg`,
+        avatar: `/img/avatar-2.png`,
         role: `member`
       }
     ];

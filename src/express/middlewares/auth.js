@@ -5,6 +5,8 @@ module.exports = (req, res, next) => {
 
   if (!user) {
     return res.redirect(`/login`);
+  } else if (user.role !== `admin`) {
+    return res.redirect(`/`);
   }
   return next();
 };

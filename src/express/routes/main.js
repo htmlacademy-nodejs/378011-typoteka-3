@@ -76,7 +76,10 @@ mainRouter.post(`/login`, async (req, res) => {
     res.render(`main/login`, {currentError});
   }
 });
-mainRouter.get(`/categories`, auth, (req, res) => res.render(`main/all-categories`));
+mainRouter.get(`/categories`, auth, (req, res) => {
+  const {user} = req.session;
+  res.render(`main/all-categories`, {user});
+});
 mainRouter.get(`/search`, async (req, res) => {
   const {user} = req.session;
   try {
