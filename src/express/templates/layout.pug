@@ -24,13 +24,17 @@ body
     if message
       .server-error= message
 
+  mixin errorMessageLogin(currentError)
+    if currentError
+      p.form__error-message=currentError
+
   mixin errorList(messages)
     if messages.length
-      div(class='form__validation-error')
-        p(class='form__error-message') При регистрации произошли ошибки:
-        ul(class='form__errors')
+      div.form__validation-error
+        p.form__error-message При регистрации произошли ошибки:
+        ul.form__errors
           each message in messages
-            li(class='form__error')= message
+            li.form__error=message
 
   mixin pagination(page, totalPages, width, prefix)
     -
@@ -51,20 +55,26 @@ body
       }
       let i = start - 1
 
-    .tickets-list__pagination
-      ul.pagination
+    .preview__toggle-wrapper
+      ul.preview__pagination.pagination
         if start > 1
           li
-            a(href=`${prefix}page=${page - 1}`) Назад
+            a.pagination__button.button.button--backwards(href=`${prefix}page=${page - 1}`, aria-label='Страница назад') Назад
         while i++ < end
-          li
-            a(class={ active: i === page } href=`${prefix}page=${i}`)= i
+          if page === i
+            li.pagination__item.pagination__item--active
+              a(href=`${prefix}page=${i}`)= i
+          else
+            li.pagination__item
+              a(href=`${prefix}page=${i}`)= i
         if end < totalPages
           li
-            a(href=`${prefix}page=${page + 1}`) Вперёд
+            a.pagination__button.button.button--forward(href=`${prefix}page=${page + 1}`, aria-label='Страница вперед') Вперёд
+
+
   .wrapper
     include partials/header.pug
     block content
     include partials/footer.pug
-//script(src='/js/vendor.js')
-//script(src='/js/main.js')
+script(src='/js/vendor.js')
+script(src='/js/main.js')

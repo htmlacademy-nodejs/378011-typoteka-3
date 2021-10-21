@@ -21,6 +21,7 @@ const {
   FILE_SENTENCES_PATH,
   FILE_TITLES_PATH,
   FILE_CATEGORIES_PATH,
+  FILE_PICTURES_PATH,
   PictureRestrict,
   FILE_COMMENTS_PATH,
   TextRestrict,
@@ -64,14 +65,15 @@ const getRandomSubarray = (items) => {
   return result;
 };
 
-const getPictureFileName = (number) => `item${(`0` + number).slice(-2)}.jpg`;
+const getPictureFileName = (pictures, number) => getRandomNull() && `/img/${pictures[number]}`;
 
-const generateArticles = (count, sentences, titles, categories, comments, users) => (
+
+const generateArticles = (count, sentences, titles, categories, comments, users, pictures) => (
   Array(count).fill({}).map(() => ({
     title: titles[getRandomInt(0, titles.length - 1)],
     announce: shuffle(sentences).slice(0, getRandomInt(AnnounceTextRestrict.MIN, AnnounceTextRestrict.MAX)).join(` `),
     fullText: shuffle(sentences).slice(0, getRandomInt(FullTextRestrict.MIN, FullTextRestrict.MAX)).join(` `),
-    picture: getRandomNull() && getPictureFileName(getRandomInt(PictureRestrict.MIN, PictureRestrict.MAX)),
+    picture: getPictureFileName(pictures, getRandomInt(PictureRestrict.MIN, PictureRestrict.MAX)),
     categories: getRandomSubarray(categories),
     comments: generateComments(getRandomInt(CommentsRestrict.MIN, CommentsRestrict.MAX), comments, users),
     user: users[getRandomInt(0, users.length - 1)].email,
@@ -94,19 +96,20 @@ module.exports = {
     const titles = await readContent(FILE_TITLES_PATH);
     const categories = await readContent(FILE_CATEGORIES_PATH);
     const comments = await readContent(FILE_COMMENTS_PATH);
+    const pictures = await readContent(FILE_PICTURES_PATH);
     const users = [
       {
         name: `Иван Иванов`,
         email: `ivanov@example.com`,
         passwordHash: await passwordUtils.hash(`ivanov`),
-        avatar: `avatar01.jpg`,
+        avatar: `/img/avatar-1.png`,
         role: `admin`
       },
       {
         name: `Пётр Петров`,
         email: `petrov@example.com`,
         passwordHash: await passwordUtils.hash(`petrov`),
-        avatar: `avatar02.jpg`,
+        avatar: `/img/avatar-2.png`,
         role: `member`
       }
     ];
@@ -119,7 +122,7 @@ module.exports = {
       process.exit(EXIT_CODE_FAILURE);
     }
 
-    const articles = generateArticles(countArticle, sentences, titles, categories, comments, users);
+    const articles = generateArticles(countArticle, sentences, titles, categories, comments, users, pictures);
 
     initDatabase(sequelize, {articles, categories, users});
 

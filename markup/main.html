@@ -4,7 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="Description" content="Личный блог Типотека">
+  <meta name="description" content="Личный блог Типотека">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Типотека</title>
   <link rel="preload" href="../src/express/public/fonts/Inter-Regular.woff2" as="font" crossorigin="anonymous">
   <link rel="preload" href="../src/express/public/fonts/Inter-Medium.woff2" as="font" crossorigin="anonymous">
@@ -128,7 +129,7 @@
               </li>
             </ul>
             <div class="preview__background">
-              <img class="preview__background-image" src="../src/express/public/img/skyscraper@1x.jpg" width="460" height="240" srcset="../src/express/public/img/skyscraper@1x.jpg 1x, img/skyscraper@2x.jpg 2x" alt="Фотография небоскреба">
+              <img class="preview__background-image" src="../src/express/public/img/skyscraper@1x.jpg" width="460" height="240" srcset="../src/express/public/img/skyscraper@1x.jpg 1x, ../src/express/public/img/skyscraper@2x.jpg 2x" alt="Фотография небоскреба">
             </div>
             <time class="preview__time" datetime="2019-03-21T20:33">21.03.2019, 20:33</time>
             <h3 class="preview__name">
@@ -145,7 +146,7 @@
               </li>
             </ul>
             <div class="preview__background">
-              <img class="preview__background-image" src="../src/express/public/img/sea@1x.jpg" width="460" height="240" srcset="../src/express/public/img/sea@1x.jpg 1x, img/sea@2x.jpg 2x" alt="Фотография моря">
+              <img class="preview__background-image" src="../src/express/public/img/sea@1x.jpg" width="460" height="240" srcset="../src/express/public/img/sea@1x.jpg 1x, ../src/express/public/img/sea@2x.jpg 2x" alt="Фотография моря">
             </div>
             <time class="preview__time" datetime="2019-03-21T20:33">21.03.2019, 20:33</time>
             <h3 class="preview__name">
@@ -183,7 +184,7 @@
               </li>
             </ul>
             <div class="preview__background">
-              <img src="../src/express/public/img/forest@1x.jpg" width="460" height="240" srcset="../src/express/public/img/forest@1x.jpg 1x, img/forest@2x.jpg 2x" alt="Фотография леса">
+              <img src="../src/express/public/img/forest@1x.jpg" width="460" height="240" srcset="../src/express/public/img/forest@1x.jpg 1x, ../src/express/public/img/forest@2x.jpg 2x" alt="Фотография леса">
             </div>
             <time class="preview__time" datetime="2019-03-21T20:33">21.03.2019, 20:33</time>
             <h3 class="preview__name">
@@ -195,6 +196,19 @@
           </li>
         </ul>
       </section>
+      <div class="preview__toggle-wrapper">
+        <ul class="preview__pagination pagination">
+          <li><a class="pagination__button button button--backwards button--disabled" href="#" aria-label="Страница назад">Назад</a>
+          </li>
+          <li class="pagination__item pagination__item--active"><a href="#">1</a></li>
+          <li class="pagination__item"><a href="#">2</a></li>
+          <li class="pagination__item"><a href="#">3</a></li>
+          <li class="pagination__item"><a href="#">4</a></li>
+          <li class="pagination__item"><a href="#">5</a></li>
+          <li><a class="pagination__button button button--forward" href="#" aria-label="Страница вперед">Вперед</a>
+          </li>
+        </ul>
+      </div>
     </main>
 
     <footer class="footer">
@@ -206,8 +220,8 @@
     </footer>
   </div>
 
-  <!-- <script src="js/vendor.js"></script>
-    <script src="js/main.js"></script> -->
+  <script src="../src/express/public/js/vendor.js"></script>
+  <script src="../src/express/public/js/main.js"></script>
 </body>
 
 </html>

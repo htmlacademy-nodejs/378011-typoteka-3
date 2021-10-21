@@ -12,7 +12,7 @@ class ArticleService {
 
   async create(articleData) {
     const article = await this._Article.create(articleData);
-    await article.addCategories(articleData.categories);
+    await article.addCategories(articleData.categories.map((category) => Number(category)));
     return article.get();
   }
 
@@ -83,23 +83,48 @@ class ArticleService {
     const [affectedRows] = await this._Article.update(article, {
       where: {id}
     });
+    const articleUpdated = await this._Article.findByPk(id, {include: [Aliase.CATEGORIES]});
+    if (articleUpdated) {
+      await articleUpdated.addCategories(article.categories.map((category) => Number(category)));
+    }
     return !!affectedRows;
+
   }
 
-  async findPage({limit, offset}) {
+  async findPage({limit, offset, comments}) {
+    const include = [Aliase.CATEGORIES, {
+      model: this._User,
+      as: Aliase.USERS,
+      attributes: {
+        exclude: [`passwordHash`]
+      }
+    }];
+    if (comments) {
+      include.push({
+        model: this._Comment,
+        as: Aliase.COMMENTS,
+        include: [
+          {
+            model: this._User,
+            as: Aliase.USERS,
+            attributes: {
+              exclude: [`passwordHash`]
+            }
+          }
+        ]
+      });
+    }
     const {count, rows} = await this._Article.findAndCountAll({
       limit,
       offset,
-      include: [Aliase.CATEGORIES, {
-        model: this._User,
-        as: Aliase.USERS,
-        attributes: {
-          exclude: [`passwordHash`]
-        }
-      }],
+      include,
       distinct: true
     });
     return {count, articles: rows};
+  }
+
+  async findAllByCategory() {
+
   }
 }
 

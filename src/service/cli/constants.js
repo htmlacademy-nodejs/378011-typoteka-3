@@ -5,7 +5,7 @@ const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
 
 const HELP = `Программа запускает http-сервер и формирует файл с данными для API.
-    
+
     Гайд:
     server <command>;
     Команды:
@@ -48,8 +48,8 @@ const CommentsRestrict = {
 };
 
 const PictureRestrict = {
-  MIN: 1,
-  MAX: 16,
+  MIN: 0,
+  MAX: 3,
 };
 
 const EXIT_CODE_FAILURE = 1;

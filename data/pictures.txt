@@ -1,5 +1,4 @@
-cat.png
-dog.jpeg
-butterfly.jpeg
-paint.jpeg
-mosaic.jpeg
+forest@2x.jpg
+sea@2x.jpg
+sea-fullsize@1x.jpg
+skyscraper@2x.jpg

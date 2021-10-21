@@ -1,4 +1,4 @@
-extends ../layout-admin
+extends ../layout
 
 block content
   main
@@ -6,6 +6,7 @@ block content
       .popup.popup--new-publication.popup--flex
         .new-publication
           form(action=`/articles/edit/${article.id}`, method='post' enctype="multipart/form-data" autocomplete="off")
+            input(type="hidden" name="_csrf" value=csrfToken)
             .new-publication__header
               h1 Редактирование публикации
               .new-publication__date-form
@@ -33,11 +34,11 @@ block content
                   .new-publication__checkbox.new-publication__checkbox--auto
                     input(
                       type='checkbox',
-                      value=index,
-                      name='category',
+                      value=category.id,
+                      name='categories',
                       id='category-checkbox-' + index
                       checked=!!(article.categories.find((el)=>el.id===category.id)))
-                    label(for=`checkbox-auto-${category.name}`) #{category.name}
+                    label(for='category-checkbox-' + index) #{category.name}
                 a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
               .form__wrapper.form__wrapper--text
                 .form__field.form__field--publication-text
