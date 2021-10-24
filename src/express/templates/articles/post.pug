@@ -1,10 +1,6 @@
 extends ../layout
 
 block content
-  -
-    const formatDate = (dateString) => {
-    return dayjs(dateString).format(`DD.MM.YYYY`);
-    }
   main
     section.post
       h1.visually-hidden Пост
@@ -18,13 +14,13 @@ block content
             ul.post__themes.themes
               each category in article.categories
                 li.themes__item
-                  a.themes__item-link(href='#')
+                  a.themes__item-link(href=`/articles/category/${category.id}`)
                     | #{category.name}
                     sup #{category.count}
                   button.themes__remove-btn(type='button') Удалить категорию
           if article.picture
             .post__picture
-              img(src=article.picture, alt='пейзаж море, скалы, пляж')
+              img(src=`/img/${article.picture}`, alt='пейзаж море, скалы, пляж')
           .post__text
             p #{article.announce}
             p #{article.fullText}
@@ -33,13 +29,13 @@ block content
           if article.comments.length > 0
             h2.comments__title.title.title--middle Комментарии
             ul.comments__list
-              each comment in article.comments
+              each comment in article.comments.sort((a, b)=>new Date(b.createdAt) - new Date(a.createdAt))
                 li.comments__comment
                   .comments__avatar.avatar
-                    img(src='/img/avatar-1.png', alt='аватар пользователя')
+                    img(src=`/img/${comment.users.avatar}`, alt='аватар пользователя')
                   .comments__text
                     .comments__head
-                      p Евгений Петров •
+                      p #{comment.users.name} •
                       time.comments__date(datetime='2019-03-21T20:33') #{dayjs(comment.createdAt).format(`DD.MM.YYYY, hh:mm`)}
                     p.comments__message #{comment.text}
           else
@@ -49,15 +45,16 @@ block content
               form(action=`/articles/${article.id}/comments`, method='POST')
                 input(type="hidden" name="_csrf" value=csrfToken)
                 .comments__avatar.avatar
-                  img(src='/img/avatar-2.png', alt='аватар пользователя')
+                  img(src=`/img/${user.avatar}`, alt='аватар пользователя')
                 label
                   textarea(rows='1', placeholder='Присоединиться к обсуждению' , name='text' )
                 button.comments__button.button.button--colored(type='submit') Опубликовать
+                +errorMessage(currentError)
           else
             .comments__footer.comments__footer--visitor
-              button.comments__button.button.button--colored(type='submit') Войти
+              a.comments__button.button.button--colored(href='/login') Войти
               .comments__registration
                 p.text.text--signature
-                  b.title.title--small Регистрация
+                  p.title.title--small Регистрация
                   | Чтобы присоединиться к переписке нужно зарегистрироваться
-            +errorMessage(error)
+

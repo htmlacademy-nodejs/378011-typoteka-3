@@ -38,7 +38,7 @@ describe(`API returns a list of all articles`, () => {
 
   test(`Returns a list of 4 articles`, () => expect(response.body.length).toBe(5));
 
-  test(`First article's title equals "Отнимут ли роботы нашу работу?"`, () => expect(response.body[0].title).toBe(`Отнимут ли роботы нашу работу?`));
+  test(`First article's title equals "Учим HTML и CSS"`, () => expect(response.body[0].title).toBe(`Учим HTML и CSS`));
 
 });
 
@@ -353,5 +353,24 @@ test(`API refuses to delete a comment to non-existent article`, async () => {
   return request(app)
   .delete(`/articles/NOEXST/comments/1`)
   .expect(HttpCode.NOT_FOUND);
+
+});
+
+
+describe(`API returns all comments`, () => {
+
+  let response;
+
+  beforeAll(async () => {
+    const app = await createAPI();
+    response = await request(app)
+      .get(`/articles/comments`);
+  });
+
+  test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
+
+
+  test(`Returns list of 11 comments`, () => expect(response.body.length).toBe(11));
+
 
 });

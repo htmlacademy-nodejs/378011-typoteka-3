@@ -12,21 +12,34 @@ head
     a.active {
       pointer-events: none;
     }
-    .server-error {
+    .server-error{
       border-radius: 10px;
       color: white;
       background-color: tomato;
       margin: 20px 0;
       padding: 10px;
     }
-body
-  mixin errorMessage(message)
-    if message
-      .server-error= message
+    .form-error-message-categories{
+      padding:0;
+      margin-top:-15px;
+      margin-left:35px;
+      font-weight:700;
+      color:#eb5757
+    }
 
-  mixin errorMessageLogin(currentError)
+
+body
+  mixin errorMessage(error)
+    if error
+      each message in error
+        .server-error= message
+
+  mixin errorMessageForm(currentError)
     if currentError
       p.form__error-message=currentError
+
+  mixin errorMessageCategories(error)
+    p.form-error-message-categories=error
 
   mixin errorList(messages)
     if messages.length
@@ -63,7 +76,7 @@ body
         while i++ < end
           if page === i
             li.pagination__item.pagination__item--active
-              a(href=`${prefix}page=${i}`)= i
+              a()= i
           else
             li.pagination__item
               a(href=`${prefix}page=${i}`)= i
@@ -71,6 +84,10 @@ body
           li
             a.pagination__button.button.button--forward(href=`${prefix}page=${page + 1}`, aria-label='Страница вперед') Вперёд
 
+  -
+    const formatDate = (dateString) => {
+    return dayjs(dateString).format(`DD.MM.YYYY`);
+    }
 
   .wrapper
     include partials/header.pug

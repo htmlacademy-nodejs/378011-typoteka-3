@@ -45,7 +45,7 @@ class ArticleService {
               exclude: [`passwordHash`]
             }
           }
-        ]
+        ],
       });
     }
     return this._Article.findByPk(id, {include});
@@ -58,7 +58,7 @@ class ArticleService {
         as: Aliase.USERS,
         attributes: {
           exclude: [`passwordHash`]
-        }
+        },
       }];
     if (needComments) {
       include.push({
@@ -75,8 +75,13 @@ class ArticleService {
         ]
       });
     }
-    const articles = await this._Article.findAll({include});
-    return articles.map((item) => item.get());
+    const articles = await this._Article.findAll({
+      include,
+      order: [
+        [`createdAt`, `DESC`],
+      ],
+    });
+    return articles.map((it) => it.get());
   }
 
   async update(id, article) {
@@ -117,15 +122,44 @@ class ArticleService {
     const {count, rows} = await this._Article.findAndCountAll({
       limit,
       offset,
+      order: [
+        [`createdAt`, `DESC`],
+      ],
+
       include,
       distinct: true
     });
     return {count, articles: rows};
   }
 
-  async findAllByCategory() {
 
+  async findAllByCategory({limit, offset, category}) {
+    const {count, rows} = await this._Article.findAndCountAll({
+      limit,
+      offset,
+      include: [
+        Aliase.COMMENTS,
+        {
+          model: this._User,
+          as: Aliase.USERS,
+          attributes: {
+            exclude: [`passwordHash`]
+          }
+        },
+        {
+          model: this._Category,
+          as: Aliase.CATEGORIES,
+          where: {
+            id: category,
+          },
+        },
+      ],
+      distinct: true,
+      order: [
+        [`createdAt`, `DESC`]
+      ],
+    });
+    return {count, articles: rows};
   }
 }
-
 module.exports = ArticleService;

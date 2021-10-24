@@ -5,16 +5,15 @@ block content
     section.main-page__publication.publication
       h1.publication__title Комментарии
       ul.publication__list
-        each article in articles
-          each comment in article.comments
-            li.publication__list-item
-              .publication__header
-                img.publication__list-image(src='/img/avatar-small-2.png', width='20', height='20', alt='Аватар пользователя')
-                b.publication__list-name Александр Петров
-                time.publication__item-time(datetime=article.createdDate) #{dayjs(article.createdDate).format(`DD.MM.YYYY, hh:mm`)}
-              a.publication__item-text(href='#')
-                | #{article.title}
-              p.publication__text-strong
-                | «#{comment.text}
-              button.publication__button.button.button--close-item(type='button')
-                span.visually-hidden Закрыть строку списка
+        each comment in comments
+          li.publication__list-item
+            .publication__header
+              img.publication__list-image(src=`/img/${comment.users.avatar}`, width='20', height='20', alt='Аватар пользователя')
+              b.publication__list-name #{comment.users.name}
+              time.publication__item-time(datetime=comment.createdAt) #{dayjs(comment.createdAt).format(`DD.MM.YYYY, hh:mm`)}
+            a.publication__item-text(href=`/articles/${comment.articles.id}`)
+              | #{comment.articles.title}
+            p.publication__text-strong
+              | «#{comment.text}
+            a.publication__button.button.button--close-item(href=`/my/comments/delete/?articleId=${comment.articles.id}&commentId=${comment.id}`)
+              span.visually-hidden Удалить комментарий

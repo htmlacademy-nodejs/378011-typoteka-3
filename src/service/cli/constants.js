@@ -96,7 +96,6 @@ const Env = {
 
 const FILL_DB_FILE = `./fill-db.sql`;
 
-const MIN_COMMENTS_LENGTH = 20;
 
 const HttpMethod = {
   GET: `GET`,
@@ -111,6 +110,8 @@ const UserRole = {
   admin: `admin`,
   member: `member`,
 };
+
+const ARTICLES_PER_PAGE = 8;
 
 module.exports = {
   DEFAULT_COUNT,
@@ -142,8 +143,8 @@ module.exports = {
   API_PREFIX,
   Env,
   PictureRestrict,
-  MIN_COMMENTS_LENGTH,
   HttpMethod,
   SALT_ROUNDS,
   UserRole,
+  ARTICLES_PER_PAGE,
 };

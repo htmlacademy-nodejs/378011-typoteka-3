@@ -6,25 +6,36 @@ const auth = require(`../middlewares/auth`);
 const {ensureArray} = require(`./../../service/cli/utils`);
 const csrf = require(`csurf`);
 const csrfProtection = csrf();
+const {ARTICLES_PER_PAGE} = require(`./../../service/cli/constants`);
+const {convertErrors} = require(`./../lib/utils`);
 
 const api = require(`./../api`).getAPI();
 const articlesRouter = new Router();
 
 
-articlesRouter.get(`/category/:id`, (req, res) => res.render(`articles/articles-by-category`));
+articlesRouter.get(`/category/:id`, auth, async (req, res) => {
+  const {user} = req.session;
+  const {id} = req.params;
+  let {page = 1} = req.query;
+  page = +page;
+
+  const limit = ARTICLES_PER_PAGE;
+
+  const offset = (page - 1) * ARTICLES_PER_PAGE;
+  const [{count, articles}, categories, category] = await Promise.all([
+    api.getArticles({limit, offset, category: id, comments: false}),
+    api.getCategories(true),
+    api.getCategory(id),
+  ]);
+  const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
+  res.render(`articles/articles-by-category`, {page, categories, category, user, totalPages, articles});
+});
+
 articlesRouter.get(`/add`, auth, csrfProtection, async (req, res) => {
   const {user} = req.session;
   const {error} = req.query;
   const categories = await api.getCategories();
   res.render(`articles/new-post`, {
-    prevArticleData: {
-      title: ``,
-      createdDate: new Date(),
-      announce: ``,
-      fullText: ``,
-      picture: ``,
-      categories: ``,
-    },
     categories,
     error,
     user,
@@ -36,21 +47,40 @@ articlesRouter.post(`/add`, upload.single(`picture`), auth, csrfProtection, asyn
   const {user} = req.session;
   const {body, file} = req;
   const currentDate = new Date();
+  const categories = await api.getCategories();
   const articleData = {
     title: body.title,
     createdDate: body.createdDate || `${currentDate}, ${currentDate.getTime()}`,
     announce: body.announce,
     fullText: body.fullText,
     categories: ensureArray(body.categories),
-    picture: file || ``,
     userId: user.id,
   };
+
+  if (file) {
+    articleData.picture = file.filename;
+  }
 
   try {
     await api.createArticle(articleData);
     res.redirect(`/`);
   } catch (error) {
-    res.redirect(`/articles/add?error=${encodeURIComponent(error.response.data.message)}`);
+    const parsedError = error.response.data.message.map((it)=>it.split(`:`));
+    const titleError = convertErrors(parsedError, `title`);
+    const announceError = convertErrors(parsedError, `announce`);
+    const categoriesError = convertErrors(parsedError, `categories`);
+    const fullTextError = convertErrors(parsedError, `fullText`);
+    const errorList = parsedError.map((it)=>it[1]);
+    res.render(`articles/new-post`, {
+      categories,
+      errorList,
+      titleError,
+      announceError,
+      categoriesError,
+      fullTextError,
+      user,
+      csrfToken: req.csrfToken()
+    });
   }
 });
 articlesRouter.get(`/edit/:id`, auth, csrfProtection, async (req, res) => {
@@ -61,14 +91,27 @@ articlesRouter.get(`/edit/:id`, auth, csrfProtection, async (req, res) => {
     api.getArticle(id),
     api.getCategories()
   ]);
-  res.render(`articles/edit-article`, {id, article, categories, error, user, csrfToken: req.csrfToken()});
+  const parsedError = error ? error.split(`,`).map((it)=>it.split(`:`)) : [];
+  const titleError = convertErrors(parsedError, `title`);
+  const announceError = convertErrors(parsedError, `announce`);
+  const categoriesError = convertErrors(parsedError, `categories`);
+  const fullTextError = convertErrors(parsedError, `fullText`);
+  const errorList = parsedError.map((it)=>it[1]);
+  res.render(`articles/edit-article`, {
+    id, article, categories, user, csrfToken: req.csrfToken(),
+    errorList,
+    titleError,
+    announceError,
+    categoriesError,
+    fullTextError,
+  });
 });
 
 articlesRouter.post(`/edit/:id`, upload.single(`picture`), auth, csrfProtection, async (req, res) => {
   const {user} = req.session;
   const {body, file} = req;
   const {id} = req.params;
-  const articleData = {
+  const article = {
     picture: file ? file.filename : body[`old-image`],
     fullText: body.fullText,
     announce: body.announce,
@@ -77,9 +120,8 @@ articlesRouter.post(`/edit/:id`, upload.single(`picture`), auth, csrfProtection,
     createdDate: body.createdDate,
     userId: user.id,
   };
-
   try {
-    await api.editArticle(id, articleData);
+    await api.editArticle(id, article);
     res.redirect(`/`);
   } catch (error) {
     res.redirect(`/articles/edit/${id}?error=${encodeURIComponent(error.response.data.message)}`);
@@ -91,7 +133,6 @@ articlesRouter.get(`/:id`, csrfProtection, async (req, res) => {
   const {error} = req.query;
   const {user} = req.session;
   const article = await api.getArticle(id, true);
-
   res.render(`articles/post`, {article, id, error, user, csrfToken: req.csrfToken()});
 });
 
@@ -99,13 +140,14 @@ articlesRouter.post(`/:id/comments`, csrfProtection, async (req, res) => {
   const {user} = req.session;
   const {id} = req.params;
   const {text} = req.body;
+  const article = await api.getArticle(id, true);
   try {
     await api.createComment(id, {userId: user.id, text});
     res.redirect(`/articles/${id}`);
   } catch (error) {
-    res.redirect(`/articles/${id}?error=${encodeURIComponent(error.response.data.message)}`);
+    const currentError = error.response.data.message[0];
+    res.render(`articles/post`, {article, id, currentError, user, csrfToken: req.csrfToken()});
   }
 });
-
 
 module.exports = articlesRouter;

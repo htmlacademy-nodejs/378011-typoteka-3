@@ -26,6 +26,11 @@ module.exports = (app, articleService, commentService) => {
     res.status(HttpCode.OK).json(result);
   });
 
+  route.get(`/comments`, async (req, res) => {
+    const result = await commentService.findAll();
+    res.status(HttpCode.OK).json(result);
+  });
+
   route.get(`/:articleId`, async (req, res) => {
     const {articleId} = req.params;
     const {comments} = req.query;
@@ -62,12 +67,12 @@ module.exports = (app, articleService, commentService) => {
   route.delete(`/:articleId`, articleExist(articleService), async (req, res) => {
     const {articleId} = req.params;
     const deletedArticle = await articleService.delete(articleId);
-
     if (!deletedArticle) {
       return res.status(HttpCode.NOT_FOUND)
       .json(deletedArticle);
     }
-
+    const comments = await commentService.findAll(articleId);
+    comments.forEach((comment)=> commentService.delete(comment.id));
     return res.status(HttpCode.OK)
     .json(deletedArticle);
   });
@@ -101,6 +106,5 @@ module.exports = (app, articleService, commentService) => {
     return res.status(HttpCode.CREATED)
     .json(comment);
   });
-
 
 };

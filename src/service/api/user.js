@@ -9,17 +9,17 @@ const userSchema = require(`../schemes/user-schema`);
 
 const route = new Router();
 
-module.exports = (app, service) => {
+module.exports = (app, userService) => {
   app.use(`/user`, route);
 
-  route.post(`/`, [schemeValidator(userSchema), userValidator(service)], async (req, res) => {
+  route.post(`/`, [schemeValidator(userSchema), userValidator(userService)], async (req, res) => {
     const data = req.body;
 
     data.passwordHash = await passwordUtils.hash(data.password);
-    const allUsers = await service.findUsers();
+    const allUsers = await userService.findUsers();
     data.role = allUsers ? UserRole.member : UserRole.admin;
 
-    const result = await service.create(data);
+    const result = await userService.create(data);
 
     delete result.passwordHash;
 
@@ -30,7 +30,7 @@ module.exports = (app, service) => {
 
   route.post(`/auth`, async (req, res) => {
     const {email, password} = req.body;
-    const user = await service.findByEmail(email);
+    const user = await userService.findByEmail(email);
     if (!user) {
       res.status(HttpCode.UNAUTHORIZED).send(`Email is incorrect`);
       return;

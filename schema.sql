@@ -43,7 +43,7 @@ CREATE TABLE articles
     id BIGSERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     announce VARCHAR(250) NOT NULL,
-    fullText VARCHAR(1000) NOT NULL,
+    fullText VARCHAR(1000),
     created_date DATE NOT NULL,
     picture TEXT,
     user_id BIGINT NOT NULL,

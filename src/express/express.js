@@ -14,6 +14,7 @@ const mainRoutes = require(`./routes/main`);
 const DEFAULT_PORT = 8080;
 const PUBLIC_DIR = `./public`;
 const UPLOAD_DIR = `upload`;
+const {HttpCode} = require(`../service/cli/constants`);
 
 const {SESSION_SECRET} = process.env;
 if (!SESSION_SECRET) {
@@ -54,9 +55,10 @@ app.use(`/`, mainRoutes);
 app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));
 app.use(express.static(path.resolve(__dirname, UPLOAD_DIR)));
 
-app.use((req, res) => res.status(400).render(`errors/404`));
-app.use((err, req, res) => res.status(500).render(`errors/500`));
-
+app.use((req, res) => res.status(HttpCode.BAD_REQUEST).render(`errors/404`));
+app.use((err, _req, res, _next) => {
+  return res.status(HttpCode.INTERNAL_SERVER_ERROR).render(`errors/500`);
+});
 app.set(`views`, path.resolve(__dirname, `templates`));
 app.set(`view engine`, `pug`);
 
