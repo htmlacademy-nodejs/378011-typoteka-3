@@ -23,12 +23,12 @@ block content
             | Последние комментарии
             span.last__icon.last__icon--cloud
           ul.last__list
-            each sortedComment in sortedComments
+            each lastComment in lastComments
               li.last__list-item
-                img.last__list-image(src=`/img/${sortedComment.users.avatar}`, width='20', height='20', alt='Аватар пользователя')
-                b.last__list-name #{sortedComment.users.name}
-                a.last__list-link(href=`/articles/${sortedComment.articleId}`)
-                  | #{sortedComment.text.slice(0, 101)}...
+                img.last__list-image(src=`/img/${lastComment.users.avatar}`, width='20', height='20', alt='Аватар пользователя')
+                b.last__list-name #{lastComment.users.name}
+                a.last__list-link(href=`/articles/${lastComment.articleId}`)
+                  | #{lastComment.text.slice(0, 101)}...
     else
       .main-page__section-flex.main-page__section-flex--short
         section.main-page__hot.hot

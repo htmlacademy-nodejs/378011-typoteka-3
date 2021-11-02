@@ -5,6 +5,7 @@ const mainRouter = new Router();
 const api = require(`./../api`).getAPI();
 const upload = require(`./../../service/middlewares/upload`);
 const auth = require(`../middlewares/auth`);
+const {getArticlesForAnnounces, getCommentsForLastComments} = require(`./../lib/utils`);
 const csrf = require(`csurf`);
 const csrfProtection = csrf();
 const {ARTICLES_PER_PAGE} = require(`./../../service/cli/constants`);
@@ -25,11 +26,14 @@ mainRouter.get(`/`, async (req, res) => {
     api.getArticles({limit, offset, comments: true}),
     api.getCategories(true)
   ]);
+
   const allArticles = await api.getArticles({comments: true});
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
-  const articlesForAnnounces = allArticles.filter((article)=> article.comments.length).sort((a, b)=>b.comments.length - a.comments.length).slice(0, 4);
-  const sortedComments = allArticles.map((article)=> article.comments).reduce((acc, next)=>[...acc, ...next]).sort((a, b)=>new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4);
-  res.render(`main/main`, {articles, page, user, totalPages, categories, articlesForAnnounces, sortedComments});
+
+  const articlesForAnnounces = getArticlesForAnnounces(allArticles);
+  const lastComments = getCommentsForLastComments(allArticles);
+
+  res.render(`main/main`, {articles, page, user, totalPages, categories, articlesForAnnounces, lastComments});
 });
 
 

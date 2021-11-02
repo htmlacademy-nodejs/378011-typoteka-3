@@ -7,7 +7,7 @@ const {ensureArray} = require(`./../../service/cli/utils`);
 const csrf = require(`csurf`);
 const csrfProtection = csrf();
 const {ARTICLES_PER_PAGE} = require(`./../../service/cli/constants`);
-const {convertErrors} = require(`./../lib/utils`);
+const {findErrorTextByType} = require(`./../lib/utils`);
 
 const api = require(`./../api`).getAPI();
 const articlesRouter = new Router();
@@ -23,7 +23,7 @@ articlesRouter.get(`/category/:id`, auth, async (req, res) => {
 
   const offset = (page - 1) * ARTICLES_PER_PAGE;
   const [{count, articles}, categories, category] = await Promise.all([
-    api.getArticles({limit, offset, category: id, comments: false}),
+    api.getArticlesByCategories({limit, offset, category: id}),
     api.getCategories(true),
     api.getCategory(id),
   ]);
@@ -66,10 +66,10 @@ articlesRouter.post(`/add`, upload.single(`picture`), auth, csrfProtection, asyn
     res.redirect(`/`);
   } catch (error) {
     const parsedError = error.response.data.message.map((it)=>it.split(`:`));
-    const titleError = convertErrors(parsedError, `title`);
-    const announceError = convertErrors(parsedError, `announce`);
-    const categoriesError = convertErrors(parsedError, `categories`);
-    const fullTextError = convertErrors(parsedError, `fullText`);
+    const titleError = findErrorTextByType(parsedError, `title`);
+    const announceError = findErrorTextByType(parsedError, `announce`);
+    const categoriesError = findErrorTextByType(parsedError, `categories`);
+    const fullTextError = findErrorTextByType(parsedError, `fullText`);
     const errorList = parsedError.map((it)=>it[1]);
     res.render(`articles/new-post`, {
       categories,
@@ -92,10 +92,10 @@ articlesRouter.get(`/edit/:id`, auth, csrfProtection, async (req, res) => {
     api.getCategories()
   ]);
   const parsedError = error ? error.split(`,`).map((it)=>it.split(`:`)) : [];
-  const titleError = convertErrors(parsedError, `title`);
-  const announceError = convertErrors(parsedError, `announce`);
-  const categoriesError = convertErrors(parsedError, `categories`);
-  const fullTextError = convertErrors(parsedError, `fullText`);
+  const titleError = findErrorTextByType(parsedError, `title`);
+  const announceError = findErrorTextByType(parsedError, `announce`);
+  const categoriesError = findErrorTextByType(parsedError, `categories`);
+  const fullTextError = findErrorTextByType(parsedError, `fullText`);
   const errorList = parsedError.map((it)=>it[1]);
   res.render(`articles/edit-article`, {
     id, article, categories, user, csrfToken: req.csrfToken(),

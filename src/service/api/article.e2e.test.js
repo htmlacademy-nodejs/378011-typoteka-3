@@ -60,6 +60,7 @@ describe(`API returns an article with given id`, () => {
 
 });
 
+
 describe(`API returns 404 when asked for non existed id`, () => {
 
   let response;
@@ -108,7 +109,6 @@ describe(`API creates an article if data is valid`, () => {
 
 });
 
-
 describe(`API refuses to create an article if data is invalid`, () => {
 
   const newArticle = {
@@ -128,12 +128,12 @@ describe(`API refuses to create an article if data is invalid`, () => {
   });
 
 
-  test(`Without any required property response code is 400`, () => {
+  test(`Without any required property response code is 400`, async () => {
     const keys = Object.keys(newArticle);
     for (const key of keys) {
       const badArticle = {...newArticle};
       delete badArticle[key];
-      request(app)
+      await request(app)
       .post(`/articles`)
       .send(badArticle)
       .expect(HttpCode.BAD_REQUEST);
