@@ -16,6 +16,9 @@ class SearchService {
           [Op.substring]: searchText
         }
       },
+      order: [
+        [`createdAt`, `DESC`],
+      ],
       include: [Aliase.CATEGORIES,
         {
           model: this._User,

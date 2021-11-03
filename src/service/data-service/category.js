@@ -17,7 +17,7 @@ class CategoryService {
           [
             Sequelize.fn(
                 `COUNT`,
-                `*`
+                Sequelize.col(`CategoryId`)
             ),
             `count`
           ]
@@ -26,13 +26,39 @@ class CategoryService {
         include: [{
           model: this._ArticleCategory,
           as: Aliase.ARTICLE_CATEGORIES,
-          attributes: []
+          attributes: [],
         }]
       });
-      return result.map((it) => it.get());
+      return result.map((category) => category.get()).filter((it)=>it.count !== `0`);
     } else {
       return this._Category.findAll({raw: true});
     }
+  }
+
+  async findOne(id) {
+    return this._Category.findByPk(id);
+  }
+
+
+  async update(id, category) {
+    const [affectedRows] = await this._Category.update(category, {
+      where: {id}
+    });
+
+    return !!affectedRows;
+  }
+
+  async delete(id) {
+    const deletedRows = await this._Category.destroy({
+      where: {id}
+    });
+
+    return !!deletedRows;
+  }
+
+  async create(categoryData) {
+    const category = await this._Category.create(categoryData);
+    return category.get();
   }
 }
 

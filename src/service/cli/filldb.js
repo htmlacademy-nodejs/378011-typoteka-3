@@ -65,14 +65,14 @@ const getRandomSubarray = (items) => {
   return result;
 };
 
-const getPictureFileName = (pictures, number) => getRandomNull() && `/img/${pictures[number]}`;
+const getPictureFileName = (pictures, number) => getRandomNull() && `${pictures[number]}`;
 
 
 const generateArticles = (count, sentences, titles, categories, comments, users, pictures) => (
   Array(count).fill({}).map(() => ({
     title: titles[getRandomInt(0, titles.length - 1)],
     announce: shuffle(sentences).slice(0, getRandomInt(AnnounceTextRestrict.MIN, AnnounceTextRestrict.MAX)).join(` `),
-    fullText: shuffle(sentences).slice(0, getRandomInt(FullTextRestrict.MIN, FullTextRestrict.MAX)).join(` `),
+    fullText: getRandomNull() && shuffle(sentences).slice(0, getRandomInt(FullTextRestrict.MIN, FullTextRestrict.MAX)).join(` `),
     picture: getPictureFileName(pictures, getRandomInt(PictureRestrict.MIN, PictureRestrict.MAX)),
     categories: getRandomSubarray(categories),
     comments: generateComments(getRandomInt(CommentsRestrict.MIN, CommentsRestrict.MAX), comments, users),
@@ -102,14 +102,14 @@ module.exports = {
         name: `Иван Иванов`,
         email: `ivanov@example.com`,
         passwordHash: await passwordUtils.hash(`ivanov`),
-        avatar: `/img/avatar-1.png`,
+        avatar: `avatar-1.png`,
         role: `admin`
       },
       {
         name: `Пётр Петров`,
         email: `petrov@example.com`,
         passwordHash: await passwordUtils.hash(`petrov`),
-        avatar: `/img/avatar-2.png`,
+        avatar: `avatar-2.png`,
         role: `member`
       }
     ];

@@ -38,7 +38,7 @@ describe(`API returns a list of all articles`, () => {
 
   test(`Returns a list of 4 articles`, () => expect(response.body.length).toBe(5));
 
-  test(`First article's title equals "Отнимут ли роботы нашу работу?"`, () => expect(response.body[0].title).toBe(`Отнимут ли роботы нашу работу?`));
+  test(`First article's title equals "Учим HTML и CSS"`, () => expect(response.body[0].title).toBe(`Учим HTML и CSS`));
 
 });
 
@@ -59,6 +59,7 @@ describe(`API returns an article with given id`, () => {
   test(`Article's title is "Отнимут ли роботы нашу работу?"`, () => expect(response.body.title).toBe(`Отнимут ли роботы нашу работу?`));
 
 });
+
 
 describe(`API returns 404 when asked for non existed id`, () => {
 
@@ -108,7 +109,6 @@ describe(`API creates an article if data is valid`, () => {
 
 });
 
-
 describe(`API refuses to create an article if data is invalid`, () => {
 
   const newArticle = {
@@ -128,12 +128,12 @@ describe(`API refuses to create an article if data is invalid`, () => {
   });
 
 
-  test(`Without any required property response code is 400`, () => {
+  test(`Without any required property response code is 400`, async () => {
     const keys = Object.keys(newArticle);
     for (const key of keys) {
       const badArticle = {...newArticle};
       delete badArticle[key];
-      request(app)
+      await request(app)
       .post(`/articles`)
       .send(badArticle)
       .expect(HttpCode.BAD_REQUEST);
@@ -353,5 +353,24 @@ test(`API refuses to delete a comment to non-existent article`, async () => {
   return request(app)
   .delete(`/articles/NOEXST/comments/1`)
   .expect(HttpCode.NOT_FOUND);
+
+});
+
+
+describe(`API returns all comments`, () => {
+
+  let response;
+
+  beforeAll(async () => {
+    const app = await createAPI();
+    response = await request(app)
+      .get(`/articles/comments`);
+  });
+
+  test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
+
+
+  test(`Returns list of 11 comments`, () => expect(response.body.length).toBe(11));
+
 
 });

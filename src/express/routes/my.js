@@ -13,8 +13,24 @@ myRouter.get(`/`, auth, async (req, res) => {
 
 myRouter.get(`/comments`, auth, async (req, res) => {
   const {user} = req.session;
-  const articles = await api.getArticles({comments: true});
-  res.render(`my/comments`, {articles: articles.slice(0, 3), user});
+  const comments = await api.getComments();
+  res.render(`my/comments`, {comments, user});
 });
 
+
+myRouter.get(`/delete/:id`, auth, async (req, res) => {
+  const {id} = req.params;
+  await api.deleteArticle(id);
+  res.redirect(`/my`);
+});
+
+myRouter.get(`/comments/delete`, auth, async (req, res) => {
+  const {articleId, commentId} = req.query;
+  try {
+    await api.deleteComment(articleId, commentId);
+    res.redirect(`/my/comments`);
+  } catch (error) {
+    res.redirect(`/my/comments/?error=${encodeURIComponent(error.response.data.message)}&currentId=${commentId}`);
+  }
+});
 module.exports = myRouter;

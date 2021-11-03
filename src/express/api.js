@@ -20,6 +20,10 @@ class API {
     return this._load(`/articles`, {params: {offset, limit, comments}});
   }
 
+  getArticlesByCategories({offset, limit, category}) {
+    return this._load(`/articles/byCategories`, {params: {offset, limit, category}});
+  }
+
   getArticle(id, comments) {
     return this._load(`/articles/${id}`, {params: {comments}});
   }
@@ -30,6 +34,30 @@ class API {
 
   async getCategories(count) {
     return this._load(`/category`, {params: {count}});
+  }
+
+  async getCategory(id) {
+    return this._load(`/category/${id}`);
+  }
+
+  editCategory(id, data) {
+    return this._load(`/category/${id}`, {
+      method: HttpMethod.PUT,
+      data
+    });
+  }
+
+  deleteCategory(id) {
+    return this._load(`/category/${id}`, {
+      method: HttpMethod.DELETE
+    });
+  }
+
+  async createCategory(data) {
+    return this._load(`/category`, {
+      method: HttpMethod.POST,
+      data
+    });
   }
 
   async createArticle(data) {
@@ -66,6 +94,22 @@ class API {
       data: {email, password}
     });
   }
+
+  deleteArticle(id) {
+    return this._load(`/articles/${id}`, {
+      method: HttpMethod.DELETE,
+    });
+  }
+
+  async getComments() {
+    return this._load(`/articles/comments`);
+  }
+
+  deleteComment(articleId, commentId) {
+    return this._load(`/articles/${articleId}/comments/${commentId}`, {
+      method: HttpMethod.DELETE,
+    });
+  }
 }
 
 const TIMEOUT = 1000;
@@ -79,3 +123,4 @@ module.exports = {
   API,
   getAPI: () => defaultAPI
 };
+

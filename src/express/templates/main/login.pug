@@ -14,7 +14,7 @@ block content
                 input(type='email', name='email', placeholder='Электронная почта', required='')
             .form__field
               label
-                input(type='password', name='password', placeholder='Пароль', required='')
-            +errorMessageLogin(currentError)
+                input(type='password', name='password', placeholder='Пароль', required='', value='')
+            +errorMessageForm(currentError)
             button.form__submit-btn.form__submit-btn--log-in.button.button--colored(type='submit') Войти
 
