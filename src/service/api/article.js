@@ -32,6 +32,7 @@ module.exports = (app, articleService, commentService) => {
 
   route.get(`/comments`, async (req, res) => {
     const result = await commentService.findAll();
+
     res.status(HttpCode.OK).json(result);
   });
 
@@ -102,10 +103,15 @@ module.exports = (app, articleService, commentService) => {
     .json(deletedComment);
   });
 
-  route.post(`/:articleId/comments`, [articleExist(articleService), schemeValidator(commentSchema)], (req, res) => {
+  route.post(`/:articleId/comments`, [articleExist(articleService), schemeValidator(commentSchema)], async (req, res) => {
     const {articleId} = req.params;
 
-    const comment = commentService.create(articleId, req.body);
+    const comment = await commentService.create(articleId, req.body);
+    const comments = await commentService.findAll();
+    const articles = await articleService.findAll({comments});
+
+    const io = req.app.locals.socketio;
+    io.emit(`comments:update`, comments, articles);
 
     return res.status(HttpCode.CREATED)
     .json(comment);
