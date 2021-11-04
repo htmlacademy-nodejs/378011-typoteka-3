@@ -97,6 +97,9 @@ articlesRouter.get(`/edit/:id`, auth, csrfProtection, async (req, res) => {
   const categoriesError = findErrorTextByType(parsedError, `categories`);
   const fullTextError = findErrorTextByType(parsedError, `fullText`);
   const errorList = parsedError.map((it)=>it[1]);
+  if (user.id !== article.userId) {
+    res.redirect(`/`);
+  }
   res.render(`articles/edit-article`, {
     id, article, categories, user, csrfToken: req.csrfToken(),
     errorList,
