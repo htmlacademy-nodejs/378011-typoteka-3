@@ -5,8 +5,6 @@ const express = require(`express`);
 const routes = require(`../api`);
 const {getLogger} = require(`../lib/logger`);
 const sequelize = require(`../lib/sequelize`);
-const swaggerUi = require(`swagger-ui-express`);
-const swaggerDocument = require(`../../../swagger`);
 const http = require(`http`);
 const socket = require(`../lib/socket`);
 
@@ -26,7 +24,6 @@ const logger = getLogger({name: `api`});
 
 app.use(express.json());
 
-app.use(`/api-docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use((req, res, next) => {
   logger.debug(`Request on route ${req.url}`);
   res.on(`finish`, () => {
