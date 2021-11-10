@@ -23,6 +23,14 @@ class UserService {
     return users;
   }
 
+  findUser(id) {
+    const user = this._User.findOne({
+      where: {id}
+    });
+
+    return user;
+  }
+
 
 }
 

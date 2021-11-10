@@ -8,7 +8,7 @@ const articleSchema = require(`../schemes/article-schema`);
 const commentSchema = require(`../schemes/comment-schema`);
 const routeParamsValidator = require(`../middlewares/route-params-validator`);
 
-module.exports = (app, articleService, commentService) => {
+module.exports = (app, articleService, commentService, userService) => {
 
   const route = new Router();
   app.use(`/articles`, route);
@@ -108,10 +108,11 @@ module.exports = (app, articleService, commentService) => {
 
     const comment = await commentService.create(articleId, req.body);
     const comments = await commentService.findAll();
+    const user = await userService.findUser(comment.userId);
     const articles = await articleService.findAll({comments});
 
     const io = req.app.locals.socketio;
-    io.emit(`comments:update`, comments, articles);
+    io.emit(`comments:update`, comment, articles, user);
 
     return res.status(HttpCode.CREATED)
     .json(comment);
