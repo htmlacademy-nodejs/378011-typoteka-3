@@ -23,7 +23,7 @@ defineModels(sequelize);
 (() => {
   category(app, new CategoryService(sequelize), new ArticleService(sequelize));
   search(app, new SearchService(sequelize));
-  article(app, new ArticleService(sequelize), new CommentService(sequelize));
+  article(app, new ArticleService(sequelize), new CommentService(sequelize), new UserService(sequelize));
   user(app, new UserService(sequelize));
 })();
 

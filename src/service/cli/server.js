@@ -5,8 +5,8 @@ const express = require(`express`);
 const routes = require(`../api`);
 const {getLogger} = require(`../lib/logger`);
 const sequelize = require(`../lib/sequelize`);
-const swaggerUi = require(`swagger-ui-express`);
-const swaggerDocument = require(`../../../swagger`);
+const http = require(`http`);
+const socket = require(`../lib/socket`);
 
 const {
   DEFAULT_PORT,
@@ -15,11 +15,15 @@ const {
 } = require(`./constants`);
 
 const app = express();
+const server = http.createServer(app);
+
+const io = socket(server);
+app.locals.socketio = io;
+
 const logger = getLogger({name: `api`});
 
 app.use(express.json());
 
-app.use(`/api-docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use((req, res, next) => {
   logger.debug(`Request on route ${req.url}`);
   res.on(`finish`, () => {
@@ -58,7 +62,7 @@ module.exports = {
     logger.info(`Connection to database established`);
 
     try {
-      app.listen(port, (err) => {
+      server.listen(port, (err) => {
         if (err) {
           return logger.error(`Ошибка при создании сервера`, err);
         }

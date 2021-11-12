@@ -7,7 +7,8 @@ const auth = require(`../middlewares/auth`);
 
 myRouter.get(`/`, auth, async (req, res) => {
   const {user} = req.session;
-  const articles = await api.getArticles({comments: false});
+  const allArticles = await api.getArticles({comments: false});
+  const articles = allArticles.filter((article)=> article.userId === user.id);
   res.render(`my/my`, {articles, user});
 });
 
