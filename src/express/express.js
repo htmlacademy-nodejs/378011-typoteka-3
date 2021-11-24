@@ -11,10 +11,9 @@ const articlesRoutes = require(`./routes/articles`);
 const myRoutes = require(`./routes/my`);
 const mainRoutes = require(`./routes/main`);
 
-const DEFAULT_PORT = 8080;
+const {DEFAULT_PORT, HttpCode} = require(`./lib/constants`);
 const PUBLIC_DIR = `./public`;
 const UPLOAD_DIR = `upload`;
-const {HttpCode} = require(`../service/cli/constants`);
 
 const {SESSION_SECRET} = process.env;
 if (!SESSION_SECRET) {

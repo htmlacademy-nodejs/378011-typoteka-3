@@ -8,7 +8,7 @@ const auth = require(`../middlewares/auth`);
 const {getArticlesForAnnounces, getCommentsForLastComments} = require(`./../lib/utils`);
 const csrf = require(`csurf`);
 const csrfProtection = csrf();
-const {ARTICLES_PER_PAGE} = require(`./../../service/cli/constants`);
+const {ARTICLES_PER_PAGE} = require(`./../lib/constants`);
 
 
 mainRouter.get(`/`, async (req, res) => {

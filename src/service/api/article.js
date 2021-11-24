@@ -2,7 +2,7 @@
 
 const {Router} = require(`express`);
 const {HttpCode} = require(`../cli/constants`);
-const articleExist = require(`../middlewares/article-exist`);
+const articleExistenceValidator = require(`../middlewares/article-exist-validator`);
 const schemeValidator = require(`../middlewares/scheme-validator`);
 const articleSchema = require(`../schemes/article-schema`);
 const commentSchema = require(`../schemes/comment-schema`);
@@ -69,7 +69,7 @@ module.exports = (app, articleService, commentService, userService) => {
     .send(`Updated`);
   });
 
-  route.delete(`/:articleId`, articleExist(articleService), async (req, res) => {
+  route.delete(`/:articleId`, articleExistenceValidator(articleService), async (req, res) => {
     const {articleId} = req.params;
     const deletedArticle = await articleService.delete(articleId);
     if (!deletedArticle) {
@@ -82,7 +82,7 @@ module.exports = (app, articleService, commentService, userService) => {
     .json(deletedArticle);
   });
 
-  route.get(`/:articleId/comments`, articleExist(articleService), async (req, res) => {
+  route.get(`/:articleId/comments`, articleExistenceValidator(articleService), async (req, res) => {
     const {articleId} = req.params;
     const comments = await commentService.findAll(articleId);
 
@@ -90,7 +90,7 @@ module.exports = (app, articleService, commentService, userService) => {
    .json(comments);
   });
 
-  route.delete(`/:articleId/comments/:commentId`, articleExist(articleService), async (req, res) => {
+  route.delete(`/:articleId/comments/:commentId`, articleExistenceValidator(articleService), async (req, res) => {
     const {commentId} = req.params;
     const deletedComment = await commentService.delete(commentId);
 
@@ -103,7 +103,7 @@ module.exports = (app, articleService, commentService, userService) => {
     .json(deletedComment);
   });
 
-  route.post(`/:articleId/comments`, [articleExist(articleService), schemeValidator(commentSchema)], async (req, res) => {
+  route.post(`/:articleId/comments`, [articleExistenceValidator(articleService), schemeValidator(commentSchema)], async (req, res) => {
     const {articleId} = req.params;
 
     const comment = await commentService.create(articleId, req.body);

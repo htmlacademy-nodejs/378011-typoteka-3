@@ -96,14 +96,6 @@ const Env = {
 
 const FILL_DB_FILE = `./fill-db.sql`;
 
-
-const HttpMethod = {
-  GET: `GET`,
-  POST: `POST`,
-  PUT: `PUT`,
-  DELETE: `DELETE`
-};
-
 const SALT_ROUNDS = 10;
 
 const UserRole = {
@@ -111,7 +103,12 @@ const UserRole = {
   member: `member`,
 };
 
-const ARTICLES_PER_PAGE = 8;
+const PoolParameter = {
+  MAX: 5,
+  MIN: 0,
+  ACQUIRE: 10000,
+  IDLE: 10000
+};
 
 module.exports = {
   DEFAULT_COUNT,
@@ -143,8 +140,7 @@ module.exports = {
   API_PREFIX,
   Env,
   PictureRestrict,
-  HttpMethod,
   SALT_ROUNDS,
   UserRole,
-  ARTICLES_PER_PAGE,
+  PoolParameter,
 };
