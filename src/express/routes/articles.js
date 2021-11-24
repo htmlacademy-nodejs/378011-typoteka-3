@@ -6,7 +6,7 @@ const auth = require(`../middlewares/auth`);
 const {ensureArray} = require(`./../../service/cli/utils`);
 const csrf = require(`csurf`);
 const csrfProtection = csrf();
-const {ARTICLES_PER_PAGE} = require(`./../../service/cli/constants`);
+const {ARTICLES_PER_PAGE} = require(`./../lib/constants`);
 const {findErrorTextByType} = require(`./../lib/utils`);
 
 const api = require(`./../api`).getAPI();

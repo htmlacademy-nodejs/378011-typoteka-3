@@ -1,6 +1,7 @@
 "use strict";
 
 const Sequelize = require(`sequelize`);
+const {PoolParameter} = require(`./../cli/constants`);
 const {DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT} = process.env;
 
 const somethingIsNotDefined = [DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT].some((it) => it === undefined);
@@ -15,10 +16,10 @@ module.exports = new Sequelize(
       port: DB_PORT,
       dialect: `postgres`,
       pool: {
-        max: 5,
-        min: 0,
-        acquire: 10000,
-        idle: 10000
+        max: PoolParameter.MAX,
+        min: PoolParameter.MAX,
+        acquire: PoolParameter.ACQUIRE,
+        idle: PoolParameter.IDLE
       }
     }
 );

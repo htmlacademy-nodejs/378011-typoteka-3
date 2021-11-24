@@ -11,6 +11,7 @@ const socket = require(`../lib/socket`);
 const article = require(`./article`);
 const DataService = require(`../data-service/article`);
 const CommentService = require(`../data-service/comment`);
+const UserService = require(`../data-service/user`);
 const {HttpCode} = require(`../cli/constants`);
 
 const {mockCategories, mockArticles} = require(`./mocks/mock-data-for-article`);
@@ -27,7 +28,7 @@ const createAPI = async () => {
 
 
   app.use(express.json());
-  article(app, new DataService(mockDB), new CommentService(mockDB));
+  article(app, new DataService(mockDB), new CommentService(mockDB), new UserService(mockDB));
   return app;
 };
 
