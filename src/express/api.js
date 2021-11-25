@@ -1,7 +1,7 @@
 'use strict';
 
 const axios = require(`axios`);
-const {HttpMethod} = require(`./../service/cli/constants`);
+const {HttpMethod} = require(`./lib/constants`);
 
 class API {
   constructor(baseURL, timeout) {

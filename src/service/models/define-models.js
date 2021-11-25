@@ -12,7 +12,7 @@ class ArticleCategory extends Model {
 
 }
 
-const define = (sequelize) => {
+const defineModels = (sequelize) => {
   const Category = defineCategory(sequelize);
   const Comment = defineComment(sequelize);
   const Article = defineArticle(sequelize);
@@ -37,4 +37,4 @@ const define = (sequelize) => {
   return {Category, Comment, Article, ArticleCategory, User};
 };
 
-module.exports = define;
+module.exports = defineModels;
