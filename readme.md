@@ -1,14 +1,28 @@
 # Личный проект «Типотека» [![Build status][travis-image]][travis-url]
 
 * Студент: [Светлана Костина](https://up.htmlacademy.ru/nodejs/3/user/378011).
-* Наставник: [Сергей Вохмянин](https://up.htmlacademy.ru/nodejs/3/user/530823).
+* Наставник: [Вадим Шевяков](https://htmlacademy.ru/profile/id574589).
 
----
 
-_Не удаляйте и не изменяйте папки и файлы:_
-_`.editorconfig`, `.gitattributes`, `.gitignore`, `.travis.yml`, `package.json`._
+### Запуск проекта
+#### 1. Скачать архив проекта
 
----
+#### 2. Установить зависимости
+```
+npm install
+```
+#### 3. Создать файл .env, используя пример в environments.md 
+
+#### 4. Заполнить базу моковыми данными
+
+```
+npm run filldb
+```
+#### 5. Запустить проект в режиме разработки
+```
+npm run start
+```
+
 
 ### Памятка
 
@@ -43,6 +57,10 @@ git clone SSH-адрес_вашего_форка
 #### 4. Начинайте обучение!
 
 ---
+
+_Не удаляйте и не изменяйте папки и файлы:_
+_`.editorconfig`, `.gitattributes`, `.gitignore`, `.travis.yml`, `package.json`._
+
 
 <a href="https://htmlacademy.ru/intensive/ecmascript"><img align="left" width="50" height="50" title="HTML Academy" src="https://up.htmlacademy.ru/static/img/intensive/ecmascript/logo-for-github.svg"></a>
 
