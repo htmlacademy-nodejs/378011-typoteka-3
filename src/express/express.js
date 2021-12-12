@@ -11,7 +11,7 @@ const articlesRoutes = require(`./routes/articles`);
 const myRoutes = require(`./routes/my`);
 const mainRoutes = require(`./routes/main`);
 
-const {DEFAULT_PORT, HttpCode} = require(`./lib/constants`);
+const {DEFAULT_PORT, HttpCode, SECRET} = require(`./lib/constants`);
 const PUBLIC_DIR = `./public`;
 const UPLOAD_DIR = `upload`;
 
@@ -33,7 +33,7 @@ sequelize.sync({force: false});
 app.use(express.urlencoded({extended: false}));
 
 app.use(session({
-  secret: `verysecretstring`,
+  secret: SECRET,
   store: mySessionStore,
   resave: false,
   proxy: true,
