@@ -7,12 +7,11 @@ const FILE_NAME = `mocks.json`;
 const HELP = `Программа запускает http-сервер и формирует файл с данными для API.
 
     Гайд:
-    server <command>;
+    server -- <command>;
     Команды:
     --version:            выводит номер версии
     --help:               печатает этот текст
-    --fill <count>        формирует файл fill-db.sql
-    --generate <count>    формирует файл mocks.json`;
+    --filldb <count>      заполняет базу данными`;
 
 const USER_ARGV_INDEX = 2;
 

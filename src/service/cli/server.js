@@ -3,6 +3,8 @@
 const chalk = require(`chalk`);
 const express = require(`express`);
 const routes = require(`../api`);
+const portfinder = require(`portfinder`);
+
 const {getLogger} = require(`../lib/logger`);
 const sequelize = require(`../lib/sequelize`);
 const http = require(`http`);
@@ -19,6 +21,7 @@ const server = http.createServer(app);
 
 const io = socket(server);
 app.locals.socketio = io;
+
 
 const logger = getLogger({name: `api`});
 
@@ -50,8 +53,8 @@ module.exports = {
 
   async run(args) {
     const [customPort] = args;
-    const port = Number.parseInt(customPort, 10) || DEFAULT_PORT;
-
+    const selectedPort = Number.parseInt(customPort, 10) || DEFAULT_PORT;
+    process.env.API_PORT = selectedPort;
     try {
       logger.info(`Trying to connect to database...`);
       await sequelize.authenticate();
@@ -60,17 +63,22 @@ module.exports = {
       process.exit(1);
     }
     logger.info(`Connection to database established`);
+    portfinder.basePort = selectedPort;
+    portfinder.highestPort = selectedPort;
 
-    try {
-      server.listen(port, (err) => {
-        if (err) {
-          return logger.error(`Ошибка при создании сервера`, err);
-        }
-        return logger.info(chalk.green(`Ожидаю соединений на ${port}`));
+    portfinder.getPortPromise()
+      .then((port) => {
+        server.listen(port, (err) => {
+          if (err) {
+            return logger.error(`Ошибка при создании сервера`, err);
+          }
+          return logger.info(chalk.green(`Ожидаю соединений на ${port}`));
+        });
+      })
+      .catch((err) => {
+        logger.error(`Произошла ошибка: ${err.message === `No open ports available` ? `Порт ${selectedPort} занят` : err.message}`);
+        process.exit(1);
       });
-    } catch (err) {
-      logger.error(`Произошла ошибка: ${err.message}`);
-      process.exit(1);
-    }
+
   }
 };

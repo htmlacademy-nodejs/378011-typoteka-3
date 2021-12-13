@@ -2,6 +2,9 @@
 
 const axios = require(`axios`);
 const {HttpMethod} = require(`./lib/constants`);
+const {getLogger} = require(`../service/lib/logger`);
+
+const logger = getLogger({name: `api`});
 
 class API {
   constructor(baseURL, timeout) {
@@ -12,8 +15,14 @@ class API {
   }
 
   async _load(url, options) {
-    const response = await this._http.request({url, ...options});
-    return response.data;
+    try {
+      const response = await this._http.request({url, ...options});
+      return response.data;
+    } catch (error) {
+      logger.error(error.response.status);
+      return process.exit(1);
+    }
+
   }
 
   getArticles({offset, limit, comments}) {
@@ -32,11 +41,11 @@ class API {
     return this._load(`/search`, {params: {query}});
   }
 
-  async getCategories(count) {
+  getCategories(count) {
     return this._load(`/category`, {params: {count}});
   }
 
-  async getCategory(id) {
+  getCategory(id) {
     return this._load(`/category/${id}`);
   }
 
@@ -53,14 +62,14 @@ class API {
     });
   }
 
-  async createCategory(data) {
+  createCategory(data) {
     return this._load(`/category`, {
       method: HttpMethod.POST,
       data
     });
   }
 
-  async createArticle(data) {
+  createArticle(data) {
     return this._load(`/articles`, {
       method: HttpMethod.POST,
       data
@@ -101,7 +110,7 @@ class API {
     });
   }
 
-  async getComments() {
+  getComments() {
     return this._load(`/articles/comments`);
   }
 
@@ -110,6 +119,8 @@ class API {
       method: HttpMethod.DELETE,
     });
   }
+
+
 }
 
 const TIMEOUT = 1000;

@@ -36,6 +36,8 @@ const UserRole = {
   member: `member`,
 };
 
+const SECRET = `verysecretstring`
+
 module.exports = {
   DEFAULT_PORT,
   HttpCode,
@@ -44,4 +46,5 @@ module.exports = {
   ArticlesNumberRestrict,
   CommentsNumberRestrict,
   UserRole,
+  SECRET,
 };
