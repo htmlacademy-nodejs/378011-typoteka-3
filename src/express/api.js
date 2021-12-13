@@ -2,6 +2,9 @@
 
 const axios = require(`axios`);
 const {HttpMethod} = require(`./lib/constants`);
+const {getLogger} = require(`../service/lib/logger`);
+
+const logger = getLogger({name: `api`});
 
 class API {
   constructor(baseURL, timeout) {
@@ -12,8 +15,14 @@ class API {
   }
 
   async _load(url, options) {
-    const response = await this._http.request({url, ...options});
-    return response.data;
+    try {
+      const response = await this._http.request({url, ...options});
+      return response.data;
+    } catch (error) {
+      logger.error(error.response.status);
+      return process.exit(1);
+    }
+
   }
 
   getArticles({offset, limit, comments}) {
@@ -110,6 +119,8 @@ class API {
       method: HttpMethod.DELETE,
     });
   }
+
+
 }
 
 const TIMEOUT = 1000;
