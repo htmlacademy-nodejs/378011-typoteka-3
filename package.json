@@ -13,7 +13,7 @@
     "start-back-server::debug": "cross-env LOG_LEVEL=info NODE_ENV=development nodemon -r dotenv/config ./src/service/service.js --server",
     "start-front-server": "nodemon -r dotenv/config src/express/express.js",
     "start-servers": "concurrently --names \"BACKEND,SSR\" \"npm run start-back-server\" \"npm run start-front-server\"",
-    "filldb": "cross-env LOG_LEVEL=info NODE_ENV=development nodemon -r dotenv/config ./src/service/service.js --filldb"
+    "filldb": "cross-env LOG_LEVEL=info NODE_ENV=development node -r dotenv/config ./src/service/service.js --filldb"
   },
   "repository": {
     "type": "git",

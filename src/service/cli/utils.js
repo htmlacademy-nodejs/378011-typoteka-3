@@ -4,7 +4,7 @@ const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
 const {
   Messages,
-  EXIT_CODE_FAILURE,
+  ExitCode,
 } = require(`./constants`);
 
 const getRandomInt = (min, max) => {
@@ -24,7 +24,7 @@ const shuffle = (someArray) => {
 
 const getCreatedDate = () =>{
   const currentDateTimestamp = Date.now();
-  let threeMonthAgo = new Date();
+  const threeMonthAgo = new Date();
   threeMonthAgo.setMonth(threeMonthAgo.getMonth() - 3);
   const threeMonthAgoTimestamp = threeMonthAgo.getTime();
   return dayjs(new Date(getRandomInt(threeMonthAgoTimestamp, currentDateTimestamp))).format(`YYYY-MM-DD`);
@@ -37,16 +37,15 @@ const readContent = async (filePath) => {
     return content.split(`\n`);
   } catch (err) {
     console.error(chalk.red(`${Messages.READING_ERROR} ${filePath}`));
-    return process.exit(EXIT_CODE_FAILURE);
+    return process.exit(ExitCode.FAIL);
   }
 };
 
 const getRandomNull = () => {
   if (Math.floor(Math.random() * (2))) {
     return true;
-  } else {
-    return null;
   }
+  return null;
 };
 
 const ensureArray = (value) => Array.isArray(value) ? value : [value];

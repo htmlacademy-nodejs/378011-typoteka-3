@@ -25,7 +25,10 @@ block content
           ul.last__list
             each lastComment in lastComments
               li.last__list-item
-                img.last__list-image(src=`/img/${lastComment.users.avatar}`, width='20', height='20', alt='Аватар пользователя')
+                if lastComment.users.avatar
+                  img.last__list-image(src=`/img/${lastComment.users.avatar}`, width='20', height='20', alt='Аватар пользователя')
+                else
+                  img.last__list-image
                 b.last__list-name #{lastComment.users.name}
                 a.last__list-link(href=`/articles/${lastComment.articleId}`)
                   | #{lastComment.text.slice(0, 101)}...

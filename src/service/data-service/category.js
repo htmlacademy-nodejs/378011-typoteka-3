@@ -30,9 +30,8 @@ class CategoryService {
         }]
       });
       return result.map((category) => category.get()).filter((it)=>it.count !== `0`);
-    } else {
-      return this._Category.findAll({raw: true});
     }
+    return this._Category.findAll({raw: true});
   }
 
   async findOne(id) {

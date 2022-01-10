@@ -2,9 +2,6 @@
 
 const axios = require(`axios`);
 const {HttpMethod} = require(`./lib/constants`);
-const {getLogger} = require(`../service/lib/logger`);
-
-const logger = getLogger({name: `api`});
 
 class API {
   constructor(baseURL, timeout) {
@@ -12,17 +9,6 @@ class API {
       baseURL,
       timeout
     });
-  }
-
-  async _load(url, options) {
-    try {
-      const response = await this._http.request({url, ...options});
-      return response.data;
-    } catch (error) {
-      logger.error(error.response.status);
-      return process.exit(1);
-    }
-
   }
 
   getArticles({offset, limit, comments}) {
@@ -97,7 +83,7 @@ class API {
     });
   }
 
-  auth(email, password) {
+  signIn(email, password) {
     return this._load(`/user/auth`, {
       method: HttpMethod.POST,
       data: {email, password}
@@ -120,6 +106,10 @@ class API {
     });
   }
 
+  async _load(url, options) {
+    const response = await this._http.request({url, ...options});
+    return response.data;
+  }
 
 }
 

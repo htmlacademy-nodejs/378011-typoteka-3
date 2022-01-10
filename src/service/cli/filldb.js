@@ -16,7 +16,7 @@ const {
   Messages,
   FullTextRestrict,
   AnnounceTextRestrict,
-  EXIT_CODE_FAILURE,
+  ExitCode,
   MAX_ARTICLES_NUMBER,
   FILE_SENTENCES_PATH,
   FILE_TITLES_PATH,
@@ -38,7 +38,7 @@ const readContent = async (filePath) => {
     return content.split(`\n`);
   } catch (err) {
     logger.error(`${Messages.READING_ERROR} ${filePath}`);
-    return process.exit(EXIT_CODE_FAILURE);
+    return process.exit(ExitCode.FAIL);
   }
 };
 
@@ -88,7 +88,7 @@ module.exports = {
       await sequelize.authenticate();
     } catch (err) {
       logger.error(`An error occured: ${err.message}`);
-      process.exit(EXIT_CODE_FAILURE);
+      process.exit(ExitCode.FAIL);
     }
     logger.info(`Connection to database established`);
 
@@ -119,13 +119,11 @@ module.exports = {
     const countArticle = Number.parseInt(count, 10) || DEFAULT_COUNT;
     if (countArticle > MAX_ARTICLES_NUMBER) {
       console.info(logger.error(Messages.OVERMUCH));
-      process.exit(EXIT_CODE_FAILURE);
+      process.exit(ExitCode.FAIL);
     }
 
     const articles = generateArticles(countArticle, sentences, titles, categories, comments, users, pictures);
 
-    initDatabase(sequelize, {articles, categories, users});
-
-
+    initDatabase(sequelize, {articles, categories, users}, {filldb: true});
   }
 };
