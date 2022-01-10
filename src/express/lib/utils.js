@@ -16,9 +16,12 @@ const getArticlesForAnnounces = (allArticles) => {
 
 const getCommentsForLastComments = (allArticles) => {
   const commentsFromArticles = allArticles.map((article)=> article.comments);
-  const allComments = commentsFromArticles.reduce((acc, next)=>[...acc, ...next]);
-  const sortedComments = allComments.sort((a, b)=>new Date(b.createdAt) - new Date(a.createdAt));
-  return sortedComments.slice(CommentsNumberRestrict.FIRST, CommentsNumberRestrict.LAST);
+  if (commentsFromArticles.length) {
+    const allComments = commentsFromArticles.reduce((acc, next)=>[...acc, ...next]);
+    const sortedComments = allComments.sort((a, b)=>new Date(b.createdAt) - new Date(a.createdAt));
+    return sortedComments.slice(CommentsNumberRestrict.FIRST, CommentsNumberRestrict.LAST);
+  }
+  return [];
 };
 
 module.exports = {
