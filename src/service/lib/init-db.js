@@ -3,7 +3,7 @@
 const defineModels = require(`../models/define-models`);
 const Aliase = require(`../models/aliase`);
 
-module.exports = async (sequelize, {categories, articles, users}) => {
+module.exports = async (sequelize, {categories, articles, users}, filldb) => {
   const {Category, Article, User} = defineModels(sequelize);
   await sequelize.sync({force: true});
 
@@ -36,4 +36,8 @@ module.exports = async (sequelize, {categories, articles, users}) => {
     await articleModel.addCategories(article.categories.map((name) => categoryIdByName[name]));
   });
   await Promise.all(articlePromises);
+  if (filldb) {
+    process.exit(0);
+  }
+
 };

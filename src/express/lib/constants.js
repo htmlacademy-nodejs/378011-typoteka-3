@@ -36,7 +36,7 @@ const UserRole = {
   member: `member`,
 };
 
-const SECRET = `verysecretstring`
+const SECRET = `verysecretstring`;
 
 module.exports = {
   DEFAULT_PORT,

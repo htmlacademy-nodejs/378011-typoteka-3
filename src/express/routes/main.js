@@ -77,7 +77,7 @@ mainRouter.get(`/login`, (req, res) => {
 
 mainRouter.post(`/login`, async (req, res) => {
   try {
-    const user = await api.auth(req.body[`email`], req.body[`password`]);
+    const user = await api.signIn(req.body[`email`], req.body[`password`]);
     req.session.user = user;
     res.redirect(`/`);
   } catch (error) {

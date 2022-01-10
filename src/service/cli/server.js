@@ -14,6 +14,7 @@ const {
   DEFAULT_PORT,
   HttpCode,
   API_PREFIX,
+  ExitCode,
 } = require(`./constants`);
 
 const app = express();
@@ -60,7 +61,7 @@ module.exports = {
       await sequelize.authenticate();
     } catch (err) {
       logger.error(`An error occured: ${err.message}`);
-      process.exit(1);
+      process.exit(ExitCode.FAIL);
     }
     logger.info(`Connection to database established`);
     portfinder.basePort = selectedPort;
@@ -77,7 +78,7 @@ module.exports = {
       })
       .catch((err) => {
         logger.error(`Произошла ошибка: ${err.message === `No open ports available` ? `Порт ${selectedPort} занят` : err.message}`);
-        process.exit(1);
+        process.exit(ExitCode.FAIL);
       });
 
   }

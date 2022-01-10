@@ -51,8 +51,6 @@ const PictureRestrict = {
   MAX: 3,
 };
 
-const EXIT_CODE_FAILURE = 1;
-
 const Messages = {
   WRITING_ERROR: `Can't write data to file...`,
   READING_ERROR: `Can't read data from file`,
@@ -84,6 +82,11 @@ const HttpCode = {
   FORBIDDEN: 403,
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
+};
+
+const ExitCode = {
+  SUCCESS: 0,
+  FAIL: 1
 };
 
 const API_PREFIX = `/api`;
@@ -119,7 +122,7 @@ module.exports = {
   AnnounceTextRestrict,
   FullTextRestrict,
   CategoriesRestrict,
-  EXIT_CODE_FAILURE,
+  ExitCode,
   Messages,
   FILE_SENTENCES_PATH,
   FILE_TITLES_PATH,
