@@ -17,7 +17,7 @@ class SearchService {
         }
       },
       order: [
-        [`createdAt`, `DESC`],
+        [`createdDate`, `DESC`],
       ],
       include: [Aliase.CATEGORIES,
         {

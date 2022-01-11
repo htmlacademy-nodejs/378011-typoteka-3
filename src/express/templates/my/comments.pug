@@ -14,6 +14,6 @@ block content
             a.publication__item-text(href=`/articles/${comment.articles.id}`)
               | #{comment.articles.title}
             p.publication__text-strong
-              | «#{comment.text}
+              | #{comment.text}
             a.publication__button.button.button--close-item(href=`/my/comments/delete/?articleId=${comment.articles.id}&commentId=${comment.id}`)
               span.visually-hidden Удалить комментарий

@@ -5,6 +5,7 @@ const {
   getRandomInt,
   shuffle,
   getRandomNull,
+  getRandomDate,
 } = require(`./utils`);
 const {getLogger} = require(`../lib/logger`);
 const sequelize = require(`../lib/sequelize`);
@@ -77,6 +78,7 @@ const generateArticles = (count, sentences, titles, categories, comments, users,
     categories: getRandomSubarray(categories),
     comments: generateComments(getRandomInt(CommentsRestrict.MIN, CommentsRestrict.MAX), comments, users),
     user: users[getRandomInt(0, users.length - 1)].email,
+    createdDate: getRandomDate(new Date(2017, 0, 1), new Date()),
   }))
 );
 

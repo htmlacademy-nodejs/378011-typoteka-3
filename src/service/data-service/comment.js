@@ -29,6 +29,9 @@ class CommentService {
       {
         model: this._Article,
         as: Aliase.ARTICLES,
+        attributes: {
+          exclude: [`announce`, `fullText`, `picture`, `userId`, `createdAt`, `updatedAt`]
+        }
       },
       Aliase.USERS,
       {

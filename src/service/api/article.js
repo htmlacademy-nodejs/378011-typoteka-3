@@ -71,13 +71,14 @@ module.exports = (app, articleService, commentService, userService) => {
 
   route.delete(`/:articleId`, articleExistenceValidator(articleService), async (req, res) => {
     const {articleId} = req.params;
+    const comments = await commentService.findAll(articleId);
+    comments.forEach((comment)=> commentService.delete(comment.id));
+
     const deletedArticle = await articleService.delete(articleId);
     if (!deletedArticle) {
       return res.status(HttpCode.NOT_FOUND)
       .json(deletedArticle);
     }
-    const comments = await commentService.findAll(articleId);
-    comments.forEach((comment)=> commentService.delete(comment.id));
     return res.status(HttpCode.OK)
     .json(deletedArticle);
   });
