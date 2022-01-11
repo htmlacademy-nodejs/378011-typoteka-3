@@ -18,6 +18,10 @@ const define = (sequelize) => Article.init({
     type: DataTypes.STRING,
     allowNull: false
   },
+  createdDate: {
+    type: DataTypes.DATE,
+    allowNull: false
+  },
 }, {
   sequelize,
   modelName: `Article`,

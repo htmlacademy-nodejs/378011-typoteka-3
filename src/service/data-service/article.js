@@ -20,6 +20,7 @@ class ArticleService {
     const deletedRows = await this._Article.destroy({
       where: {id}
     });
+
     return !!deletedRows;
   }
 
@@ -78,7 +79,7 @@ class ArticleService {
     const articles = await this._Article.findAll({
       include,
       order: [
-        [`createdAt`, `DESC`],
+        [`createdDate`, `DESC`],
       ],
     });
     return articles.map((it) => it.get());
@@ -123,7 +124,7 @@ class ArticleService {
       limit,
       offset,
       order: [
-        [`createdAt`, `DESC`],
+        [`createdDate`, `DESC`],
       ],
 
       include,

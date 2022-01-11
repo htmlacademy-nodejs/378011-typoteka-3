@@ -5,9 +5,12 @@ block content
     section.main-page__notes.notes
       h1.notes__title Мои записи
       ul.notes__list
-        each article in articles
-          li.notes__list-item
-            time.notes__item-time(datetime=article.createdAt) #{formatDate(article.createdAt)}
-            a.notes__item-text(href=`/articles/${article.id}`) #{article.title}
-            a.notes__button.button.button--close-item(href=`/my/delete/${article.id}`)
-              span.visually-hidden Закрыть строку списка
+        if articles.length
+          each article in articles
+            li.notes__list-item
+              time.notes__item-time(datetime=article.createdDate) #{formatDate(article.createdDate)}
+              a.notes__item-text(href=`/articles/${article.id}`) #{article.title}
+              a.notes__button.button.button--close-item(href=`/my/delete/${article.id}`)
+                span.visually-hidden Закрыть строку списка
+        else
+          p Пока нет ни одной записи

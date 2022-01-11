@@ -15,7 +15,7 @@ block content
           else
             each result in results
               .search__result
-                time.search__date(datetime=result.createdAt) #{formatDate(result.createdAt)}
+                time.search__date(datetime=result.createdDate) #{formatDate(result.createdDate)}
                 a.search__link(href=`/articles/${result.id}`)
                   | #{result.title}
 

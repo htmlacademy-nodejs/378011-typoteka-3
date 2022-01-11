@@ -49,6 +49,7 @@ const getRandomNull = () => {
 };
 
 const ensureArray = (value) => Array.isArray(value) ? value : [value];
+const getRandomDate = (start, end) => new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 
 module.exports = {
   getRandomInt,
@@ -57,4 +58,5 @@ module.exports = {
   readContent,
   getRandomNull,
   ensureArray,
+  getRandomDate,
 };

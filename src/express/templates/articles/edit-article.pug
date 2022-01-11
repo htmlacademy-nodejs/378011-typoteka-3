@@ -13,7 +13,7 @@ block content
                 h3 Дата публикации
                   .new-publication__date-block
                     label(for='new-publication-date', aria-label='Календарь')
-                    input#new-publication-date(type='text', name='createdDate', value=article.createdAt)
+                    input#new-publication-date(type='text', name='createdDate', value=article.createdDate)
               button.new-publication__button.button.button--colored(type='submit') Опубликовать
             button.popup__button.button.button--popup-close(type='button', aria-label='Закрыть окно')
               | Закрыть
@@ -22,7 +22,7 @@ block content
               .form__wrapper.form__wrapper--intro
                 .form__field
                   label
-                    input(type='text', name='title', value=article.title, required)
+                    input(type='text', name='title', value=article.title)
                 +errorMessageForm(titleError)
                 .form__field.form__field--post-image
                   label
